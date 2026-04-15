@@ -15,9 +15,9 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            /* **关键：调用你的自定义背景图 charm-bg.jpg** */
+            /* 保持大写后缀的 charm-bg.JPG */
             background: linear-gradient(rgba(245, 242, 235, 0.4), rgba(234, 221, 202, 0.4)), 
-                        url('charm-bg.jpg') no-repeat center center fixed;
+                        url('charm-bg.JPG') no-repeat center center fixed;
             background-size: cover;
             margin: 0;
             display: flex;
@@ -58,7 +58,7 @@
             border: 3px solid white; box-shadow: 0 6px 18px rgba(0,0,0,0.07); margin-bottom: 25px;
         }
 
-        /* 衬线斜体字 */
+        /* 标题字体 */
         h1, #result-title {
             font-family: 'Bodoni Moda', serif; font-weight: 400; font-style: italic;
             color: var(--primary); letter-spacing: -0.04em; margin: 0;
@@ -71,15 +71,39 @@
             color: var(--text-sub); margin-bottom: 35px;
         }
 
-        /* 问题与按钮 */
+        /* 问题区域 */
         #quiz-content { display: none; text-align: left; }
-        .question-text { font-size: 1.15rem; margin-bottom: 25px; font-weight: 500; }
-        .option-btn {
-            display: block; width: 100%; background: rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(0,0,0,0.04); padding: 18px 20px; margin-bottom: 12px;
-            border-radius: 12px; cursor: pointer; font-family: inherit; font-size: 1rem; text-align: left;
+        .question-text { 
+            font-family: "STSong", "SimSun", "Songti SC", serif; 
+            font-size: 1.2rem; 
+            margin-bottom: 25px; 
+            font-weight: 600; 
+            color: #000;
         }
-        .option-btn:hover { background: white; border-color: var(--primary); transform: translateX(3px); transition: 0.2s; }
+
+        /* 选项按钮 - 黑色、斜体、宋体 */
+        .option-btn {
+            display: block; 
+            width: 100%; 
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(0,0,0,0.04); 
+            padding: 18px 20px; 
+            margin-bottom: 12px;
+            border-radius: 12px; 
+            cursor: pointer; 
+            font-family: "STSong", "SimSun", "Songti SC", serif; 
+            font-style: italic;
+            font-size: 1.05rem; 
+            text-align: left;
+            color: #000; 
+            transition: all 0.25s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .option-btn:hover { 
+            background: white; 
+            border-color: var(--primary); 
+            transform: translateX(3px); 
+        }
 
         .primary-btn {
             background: var(--primary); color: white; border: none; padding: 16px 50px;
@@ -87,7 +111,13 @@
         }
 
         #result-container { display: none; }
-        #result-desc { font-size: 0.95rem; line-height: 1.8; color: #666; margin-bottom: 30px; }
+        #result-desc { 
+            font-family: "STSong", "SimSun", "Songti SC", serif; 
+            font-size: 1rem; 
+            line-height: 1.8; 
+            color: #222; 
+            margin-bottom: 30px; 
+        }
     </style>
 </head>
 <body>
@@ -110,11 +140,11 @@
     </div>
 
     <div id="result-container">
-        <img src="clairo2.jpg" alt="Result" class="clairo-avatar">
+        <img src="clairo2.JPG" alt="Result" class="clairo-avatar">
         <div class="result-header">Your soul matches</div>
         <div id="result-title"></div>
         <div id="result-desc" style="margin-top:20px;"></div>
-        <button class="option-btn" style="text-align:center; border:none; color:var(--primary); font-weight:500; letter-spacing: 2px;" onclick="location.reload()">RETAKE TEST</button>
+        <button class="option-btn" style="text-align:center; border:none; color:var(--primary); font-weight:bold; letter-spacing: 2px;" onclick="location.reload()">RETAKE TEST</button>
     </div>
 </div>
 
@@ -123,10 +153,10 @@
         { q: "深夜独自一人时，你更倾向于？", options: { A: "开一点轻快的音乐顺便自拍", B: "陷入一段挥之不去的旧回忆", C: "点亮香薰，享受当下的宁静", D: "给心仪的人发一段意味深长的话" }},
         { q: "你理想中的旅行目的地是？", options: { A: "街头跳蚤市场", B: "潮湿的古老城市", C: "深山里的木屋", D: "复古午后咖啡馆" }},
         { q: "哪种声音最让你感到治愈？", options: { A: "老录音机的底噪", B: "雨点敲击车窗", C: "森林里的鸟鸣", D: "冰块撞击杯子" }},
-        { q: "如果要把一段感情比作一种物件？", options: { A: "曝光过度的照片", B: "洗得发白的旧卫衣", C: "精心打理的小盆栽", D: "挥发中的昂贵香水" }},
+        { q: "如果要把一段感情比作一种物件？", options: { A: "曝光过度的照片", B: "一件洗得发白的旧卫衣", C: "一个精心打理的小盆栽", D: "挥发中的昂贵香水" }},
         { q: "在社交场合中，你通常扮演？", options: { A: "活跃气氛的人", B: "角落里的观察者", C: "照顾朋友的人", D: "神秘且引人注目" }},
         { q: "哪种穿着风格让你最自信？", options: { A: "趣味混搭", B: "大号连帽衫", C: "素色棉麻", D: "复古廓形" }},
-        { q: "你如何看待“孤独”？", options: { A: "创作灵感来源", B: "酸楚的常态", C: "一种自由", D: "高级的清醒" }},
+        { q: "你如何看待“孤独”？", options: { A: "创作灵感来源", B: "一种酸楚的常态", C: "一种自由", D: "高级的清醒" }},
         { q: "你的房间装饰风格是？", options: { A: "海报与杂志", B: "极简暗藏秘密", C: "植物与暖灯", D: "电影感与质感" }},
         { q: "面对未来，你的心态更接近？", options: { A: "顺其自然", B: "忧虑但想尝试", C: "寻找归属", D: "优雅掌控" }},
         { q: "最后，选择你此刻想喝的？", options: { A: "苏打水", B: "黑咖啡", C: "草本茶", D: "鸡尾酒" }}

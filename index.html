@@ -7,9 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,400;1,500;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #6b7a6d; /* Charm 绿色 */
+            --primary: #6b7a6d;
             --bg-filter: linear-gradient(rgba(245, 242, 235, 0.4), rgba(234, 221, 202, 0.4));
-            --glass-white: rgba(255, 255, 255, 0.45); /* 高透明度 */
+            --glass-white: rgba(255, 255, 255, 0.45); 
             --cream-white: #f5f5dc;
         }
 
@@ -23,100 +23,97 @@
 
         #quiz-container { width: 92%; max-width: 400px; position: relative; z-index: 2; padding: 20px 0; }
 
-        /* 通用玻璃面板 */
+        /* 统一的玻璃面板：题目和选项都在这里面 */
         .glass-panel {
             background: var(--glass-white); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
             padding: 40px 25px; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: left; /* 整体左对齐 */
         }
 
         /* 顶部进度条 */
         .progress-wrapper { width: 100%; height: 2px; background: rgba(0,0,0,0.05); margin-bottom: 25px; }
         .progress-bar { height: 100%; background-color: var(--primary); width: 0%; transition: width 0.4s ease; }
 
-        /* 【核心】答题页排版：左对齐题干块 */
-        .question-box {
-            background: var(--glass-white); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            padding: 25px; margin-bottom: 20px; border: 1px solid rgba(255, 255, 255, 0.3);
-            text-align: left; /* 对应图片排版 */
-        }
-        .question-meta { font-size: 0.65rem; letter-spacing: 2px; color: #888; text-transform: uppercase; margin-bottom: 10px; }
+        /* 题目样式 */
+        .question-meta { font-size: 0.65rem; letter-spacing: 2px; color: #888; text-transform: uppercase; margin-bottom: 12px; display: block;}
         .question-text {
-            font-family: 'Bodoni Moda', serif; font-size: 1.4rem; line-height: 1.3;
-            color: #222; font-weight: 500;
+            font-family: 'Bodoni Moda', serif; font-size: 1.45rem; line-height: 1.3;
+            color: #1a1a1a; font-weight: 500; margin-bottom: 35px;
         }
 
-        /* 选项按钮：直角、高透明 */
+        /* 选项按钮：保持直角，透明底色 */
         .option-btn {
-            display: block; width: 100%; background: var(--glass-white); 
-            border: 1px solid rgba(255, 255, 255, 0.3); padding: 18px 20px; margin-bottom: 10px; 
+            display: block; width: 100%; background: rgba(255, 255, 255, 0.2); 
+            border: 1px solid rgba(255, 255, 255, 0.3); padding: 18px 0; margin-bottom: 5px; 
             border-radius: 0; cursor: pointer; color: #333;
-            font-family: "STSong", serif; font-style: italic; font-size: 1rem; text-align: left; transition: 0.3s;
-            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            font-family: "STSong", serif; font-style: italic; font-size: 1.05rem; text-align: left; transition: 0.3s;
+            border-left: none; border-right: none; border-top: none; /* 极简线条感 */
         }
-        .option-btn:hover { background: rgba(255, 255, 255, 0.75); border-color: var(--primary); transform: translateX(5px); }
+        .option-btn:hover { padding-left: 10px; background: rgba(255, 255, 255, 0.4); border-bottom-color: var(--primary); }
 
-        /* 返回上一题：圆角胶囊 */
-        .back-btn-wrapper { margin-top: 25px; display: flex; justify-content: center; }
+        /* 返回按钮：圆角胶囊 */
+        .back-btn-wrapper { margin-top: 30px; display: flex; justify-content: center; }
         .back-btn {
             background: var(--glass-white); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            color: #666; border: 1px solid rgba(255, 255, 255, 0.3); padding: 10px 25px; 
-            border-radius: 25px; /* 圆角改回 */
-            font-size: 0.75rem; cursor: pointer; font-style: italic; transition: 0.3s;
+            color: #888; border: 1px solid rgba(255, 255, 255, 0.3); padding: 8px 22px; 
+            border-radius: 20px; font-size: 0.75rem; cursor: pointer; font-style: italic;
         }
 
-        /* 署名样式：Charm 绿色 */
-        .signature { margin-top: 30px; font-size: 0.75rem; color: var(--primary); font-family: 'Bodoni Moda', serif; font-style: italic; letter-spacing: 1px; }
-
-        /* 结果页样式 */
-        .clairo-avatar { width: 95px; height: 95px; border-radius: 50%; object-fit: cover; border: 3px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        #result-title { font-family: 'Bodoni Moda', serif; font-style: italic; font-size: 2rem; color: var(--primary); margin: 10px 0; }
-        .lyric-box { font-family: 'Bodoni Moda', serif; font-style: italic; color: #999; font-size: 0.85rem; margin-bottom: 15px; line-height: 1.4; padding: 0 10px; }
-        #result-desc { font-family: "STSong", serif; font-size: 0.9rem; line-height: 1.6; color: #444; text-align: justify; margin-bottom: 30px; }
-        
-        /* 匹配度列表 */
-        .track-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.03); font-size: 0.8rem; color: #555; font-style: italic; }
-        .match-bar-visual { width: 50px; height: 3px; background: rgba(0,0,0,0.05); position: relative; margin-left: 8px; border-radius: 2px; }
-        .match-bar-fill { height: 100%; background: var(--cream-white); box-shadow: 0 0 5px rgba(255,255,220,0.8); }
+        /* 署名：Charm 绿色 */
+        .signature { margin-top: 30px; font-size: 0.7rem; color: var(--primary); font-family: 'Bodoni Moda', serif; font-style: italic; letter-spacing: 1px; text-align: center; }
 
         /* 音乐控制 */
         .music-player-ctrl { position: absolute; top: 20px; right: 20px; z-index: 100; }
-        #music-toggle { background: rgba(255, 255, 255, 0.5); border: none; border-radius: 50%; width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        #music-toggle { background: rgba(255, 255, 255, 0.5); border: none; border-radius: 50%; width: 36px; height: 36px; cursor: pointer; }
+
+        /* 结果页特化 */
+        .res-center { text-align: center ! pole; }
+        .clairo-avatar { width: 95px; height: 95px; border-radius: 50%; object-fit: cover; border: 3px solid white; display: block; margin: 0 auto; }
+        #result-title { font-family: 'Bodoni Moda', serif; font-style: italic; font-size: 2.1rem; color: var(--primary); margin: 15px 0 5px; text-align: center; }
+        .lyric-box { font-family: 'Bodoni Moda', serif; font-style: italic; color: #999; font-size: 0.85rem; margin-bottom: 20px; line-height: 1.4; text-align: center; }
+        #result-desc { font-family: "STSong", serif; font-size: 0.9rem; line-height: 1.7; color: #444; text-align: justify; }
+
+        .track-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.03); font-size: 0.8rem; color: #555; font-style: italic; }
+        .match-bar-visual { width: 50px; height: 3px; background: rgba(0,0,0,0.05); position: relative; margin-left: 8px; }
+        .match-bar-fill { height: 100%; background: var(--cream-white); box-shadow: 0 0 5px rgba(255,255,220,0.8); }
     </style>
 </head>
 <body>
 
 <div id="quiz-container">
-    <div id="intro-page" class="glass-panel">
-        <img src="clairo.jpg" class="clairo-avatar" style="margin-bottom: 20px;">
+    <div id="intro-page" class="glass-panel" style="text-align: center;">
+        <img src="clairo.jpg" class="clairo-avatar" style="margin-bottom: 25px;">
         <h1 style="font-family:'Bodoni Moda'; font-style:italic; color:var(--primary); font-size:2.8rem; margin:0;">Clairo</h1>
-        <p style="font-family:'Bodoni Moda', serif; font-style:italic; color:#666; margin-bottom:35px; line-height:1.5; padding: 0 15px;">
+        <p style="font-family:'Bodoni Moda', serif; font-style:italic; color:#666; margin-bottom:40px; line-height:1.5;">
             Which Clairo song defines your soul? From the bedroom lo fi beats of Diary 001 to the charming melodies of Charm. Step into the haze and find your track.
         </p>
-        <button onclick="startQuiz()" style="background:var(--primary); color:white; border:none; padding:16px 50px; border-radius:30px; cursor:pointer; font-weight:500; letter-spacing:1px;">START TEST</button>
+        <button onclick="startQuiz()" style="background:var(--primary); color:white; border:none; padding:16px 55px; border-radius:30px; cursor:pointer; font-weight:500;">START TEST</button>
         <div class="signature">by ClairoDaily</div>
     </div>
 
-    <div id="quiz-content" style="display:none;">
+    <div id="quiz-content" class="glass-panel" style="display:none;">
         <div class="progress-wrapper"><div class="progress-bar" id="progress"></div></div>
         
         <div id="question-area">
-            </div>
+            <span class="question-meta" id="q-meta">QUESTION 01 / 15</span>
+            <div id="q-text" class="question-text"></div>
+            <div id="options-list"></div>
+        </div>
 
         <div class="back-btn-wrapper">
             <button id="back-link" class="back-btn" onclick="prevQuestion()" style="display:none;">← Back to previous question</button>
         </div>
-        <div class="signature" style="text-align:center;">by ClairoDaily</div>
+        <div class="signature">by ClairoDaily</div>
     </div>
 
     <div id="result-container" class="glass-panel" style="display:none;">
         <img src="" class="clairo-avatar" id="result-img">
-        <div style="font-family:'Bodoni Moda'; font-style:italic; color:#aaa; font-size:0.75rem; margin-top:20px;">Your soul track is</div>
+        <div style="font-family:'Bodoni Moda'; font-style:italic; color:#aaa; font-size:0.75rem; margin-top:20px; text-align: center;">Your soul track is</div>
         <div id="result-title"></div>
         <div id="result-lyric" class="lyric-box"></div>
         <div id="result-desc"></div>
         
-        <div style="font-size:0.6rem; letter-spacing:2px; color:#ccc; margin:25px 0 10px; border-top:1px solid rgba(0,0,0,0.05); padding-top:20px;">TOP 5 CORRELATION TRACKS</div>
+        <div style="font-size:0.6rem; letter-spacing:2px; color:#ccc; margin:30px 0 10px; border-top:1px solid rgba(0,0,0,0.05); padding-top:20px; text-align: center;">TOP 5 CORRELATION TRACKS</div>
         <div id="track-list-container"></div>
         
         <button class="option-btn" style="text-align:center; border:none; margin-top:35px; color:var(--primary); font-weight:bold; background:none;" onclick="location.reload()">RETAKE TEST</button>
@@ -191,16 +188,12 @@
 
     function renderQuestion() {
         const qData = questions[currentStep];
-        const area = document.getElementById('question-area');
-        area.innerHTML = `
-            <div class="question-box">
-                <div class="question-meta">QUESTION ${String(currentStep + 1).padStart(2, '0')} / 15</div>
-                <div class="question-text">${qData.q}</div>
-            </div>
-            <div class="options-list">
-                ${Object.entries(qData.options).map(([k, v]) => `<button class="option-btn" onclick="handleSelect('${k}')">${v}</button>`).join('')}
-            </div>
-        `;
+        document.getElementById('q-meta').innerText = `QUESTION ${String(currentStep + 1).padStart(2, '0')} / 15`;
+        document.getElementById('q-text').innerText = qData.q;
+        document.getElementById('options-list').innerHTML = Object.entries(qData.options).map(([k, v]) => 
+            `<button class="option-btn" onclick="handleSelect('${k}')">${v}</button>`
+        ).join('');
+        
         document.getElementById('progress').style.width = ((currentStep + 1) / questions.length) * 100 + '%';
         document.getElementById('back-link').style.display = currentStep > 0 ? 'inline-block' : 'none';
     }
@@ -227,7 +220,6 @@
         document.getElementById('result-lyric').innerText = main.lyric;
         document.getElementById('result-desc').innerText = main.desc;
 
-        // 计算 TOP 5 相关度
         let allPool = [];
         Object.keys(songs).forEach(key => {
             const weight = (scores[key] + 1) / (questions.length + 4);
@@ -241,7 +233,7 @@
         document.getElementById('track-list-container').innerHTML = top5.map(s => `
             <div class="track-item">
                 <span>${s.title}</span>
-                <div style="display:flex; align-items:center;">
+                <div style="flex-shrink:0; display:flex; align-items:center;">
                     <span style="font-family:'Bodoni Moda'; font-style:italic; color:var(--primary); font-weight:500;">${s.rel}%</span>
                     <div class="match-bar-visual"><div class="match-bar-fill" style="width:${s.rel}%;"></div></div>
                 </div>
@@ -257,4 +249,3 @@
 </script>
 </body>
 </html>
-

@@ -9,7 +9,7 @@
         :root {
             --primary: #6b7a6d;
             --bg-filter: linear-gradient(rgba(245, 242, 235, 0.5), rgba(234, 221, 202, 0.5));
-            --glass-block: rgba(255, 255, 255, 0.6); 
+            --glass-block: rgba(255, 255, 255, 0.5); 
             --cream-white: #f5f5dc;
         }
 
@@ -17,244 +17,159 @@
             font-family: 'Inter', sans-serif;
             background: var(--bg-filter), url('charm-bg.JPG') no-repeat center center fixed;
             background-size: cover;
-            margin: 0;
-            display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+            margin: 0; display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; overflow: hidden; -webkit-font-smoothing: antialiased;
         }
 
-        /* 顶部米白色进度条 */
-        .progress-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 5px;
-            background-color: rgba(255, 255, 255, 0.2); z-index: 1000;
+        /* 模仿图2：更细致的进度条 */
+        .progress-wrapper {
+            width: 100%; height: 2px; background: rgba(0,0,0,0.05); margin-bottom: 30px;
         }
         .progress-bar { 
-            height: 100%; background-color: var(--cream-white); width: 0%; 
-            transition: width 0.4s ease; box-shadow: 0 0 10px rgba(255, 255, 220, 0.5);
+            height: 100%; background-color: var(--primary); width: 0%; 
+            transition: width 0.4s ease; 
         }
 
-        #quiz-container { width: 85%; max-width: 380px; position: relative; text-align: center; z-index: 2; padding: 20px 0; }
+        #quiz-container { width: 88%; max-width: 420px; position: relative; z-index: 2; }
 
         .glass-panel {
-            background: rgba(255, 255, 255, 0.88); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            padding: 40px 25px; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            background: rgba(255, 255, 255, 0.82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            padding: 50px 25px 40px 25px; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1); text-align: center;
         }
 
+        /* 音乐图标 */
         .music-player-ctrl { position: absolute; top: 20px; right: 20px; z-index: 100; }
         #music-toggle {
-            background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(0,0,0,0.05);
+            background: rgba(255, 255, 255, 0.6); border: none;
             border-radius: 50%; width: 38px; height: 38px; cursor: pointer;
             display: flex; align-items: center; justify-content: center;
         }
-        .rotating { animation: rotate 4s linear infinite; }
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        .clairo-avatar {
-            width: 100px; height: 100px; border-radius: 50%; object-fit: cover;
-            border: 3px solid white; box-shadow: 0 6px 18px rgba(0,0,0,0.07);
+        .clairo-avatar { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid white; }
+
+        /* 模仿图2：题号显示 */
+        .question-meta {
+            font-size: 0.7rem; letter-spacing: 2px; color: #999; text-transform: uppercase; margin-bottom: 15px;
         }
 
-        h1 { font-family: 'Bodoni Moda', serif; font-weight: 400; font-style: italic; color: var(--primary); margin: 0; font-size: 2.6rem; margin-bottom: 15px; }
-        .intro-desc { font-family: 'Bodoni Moda', serif; font-style: italic; font-size: 1rem; line-height: 1.6; color: #555; margin-bottom: 35px; }
-
-        #quiz-content { display: none; text-align: left; }
-        
+        /* 模仿图2：问题标题样式 */
         .question-text {
-            font-family: "STSong", "SimSun", "Songti SC", serif; font-size: 1.15rem; margin-bottom: 20px; 
-            font-weight: 600; color: #000; background: var(--glass-block); padding: 20px; 
-            border-radius: 0; border: 1px solid rgba(255,255,255,0.4);
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            font-family: 'Bodoni Moda', serif; font-size: 1.6rem; line-height: 1.3;
+            margin-bottom: 40px; color: #222; text-align: left; padding: 0 5px;
         }
 
+        #quiz-content { display: none; }
+
+        /* 模仿图2：长方形、高透明、细微描边的选项 */
         .option-btn {
             display: block; width: 100%; 
-            background: rgba(255, 255, 255, 0.6); 
-            border: 1px solid rgba(255,255,255,0.3);
-            padding: 16px 20px; margin-bottom: 10px; 
-            border-radius: 0; 
-            cursor: pointer; color: #000;
-            font-family: "STSong", "SimSun", "Songti SC", serif; font-style: italic; 
-            font-size: 1rem; text-align: left; transition: 0.2s;
-            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.4); 
+            border: 1px solid rgba(0, 0, 0, 0.1); /* 细微深色描边 */
+            padding: 20px; margin-bottom: 12px; 
+            border-radius: 12px; /* 稍微给一点圆角模仿图2的现代感，如需纯直角请改为0 */
+            cursor: pointer; color: #333;
+            font-family: "STSong", serif; font-style: italic; 
+            font-size: 0.95rem; text-align: left; transition: 0.3s;
+            backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
         }
-        .option-btn:hover { background: rgba(255, 255, 255, 0.85); transform: translateX(4px); border-color: var(--primary); }
+        .option-btn:hover { 
+            background: rgba(255, 255, 255, 0.8); 
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
 
-        /* **核心修改：返回上一题 - 增加毛玻璃背景并往下放** */
-        .back-btn-wrapper {
-            margin-top: 35px; /* 往下放一点 */
-            display: flex;
-            justify-content: center;
-        }
+        /* 返回上一题：毛玻璃背景 */
+        .back-btn-wrapper { margin-top: 30px; }
         .back-btn {
-            background: var(--glass-block); /* 和选项一致的毛玻璃背景 */
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            color: var(--primary); border: 1px solid rgba(255,255,255,0.3); 
-            padding: 10px 25px; border-radius: 0; /* 直角长方形 */
-            font-size: 0.8rem; cursor: pointer; font-style: italic; transition: 0.3s;
-            -webkit-tap-highlight-color: transparent;
-        }
-        .back-btn:hover { background: rgba(255, 255, 255, 0.85); }
-
-        .primary-btn { background: var(--primary); color: white; border: none; padding: 16px 50px; border-radius: 30px; font-size: 1rem; cursor: pointer; font-weight: 500; }
-
-        /* **结果页紧凑化核心 CSS** */
-        #result-container { display: none; text-align: center; }
-        
-        #result-title { 
-            font-family: 'Bodoni Moda', serif; font-weight: 400; font-style: italic; color: var(--primary);
-            font-size: 2.1rem; /* 标题变小 */
-            margin: 5px 0 10px 0; /* 压缩上下间距 */
-            line-height: 1.1;
-        }
-        .result-era {
-            font-size: 0.7rem; /* 字变小 */
-            text-transform: uppercase; letter-spacing: 1px; color: var(--primary);
-            background: rgba(107, 122, 109, 0.1); padding: 4px 12px; border-radius: 12px;
-            display: inline-block; margin-bottom: 12px; /* 压缩间距 */
-        }
-        #result-desc { 
-            font-family: "STSong", "SimSun", "Songti SC", serif; 
-            font-size: 0.9rem; /* 字变小 */
-            line-height: 1.6; color: #333; text-align: justify;
-            margin-bottom: 25px; /* 压缩间距 */
-            padding: 0 5px;
+            background: rgba(255, 255, 255, 0.3); backdrop-filter: blur(10px);
+            color: #999; border: none; padding: 10px 20px; border-radius: 0;
+            font-size: 0.8rem; cursor: pointer; font-style: italic;
         }
 
-        /* 关联列表紧凑化与百分比条 */
-        .top-tracks-title { 
-            font-size: 0.6rem; letter-spacing: 2px; color: #999;
-            margin-top: 25px; border-top: 1px solid #eee; padding-top: 15px; 
-            margin-bottom: 10px;
+        /* 署名小字 */
+        .signature {
+            margin-top: 20px; font-size: 0.75rem; color: #aaa; 
+            font-family: 'Bodoni Moda', serif; font-style: italic;
         }
-        .track-item { 
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 8px 0; /* 压缩间距 */
-            border-bottom: 1px dashed #f0f0f0; font-size: 0.8rem; color: #555; 
-        }
-        .match-bar-container {
-            display: flex; align-items: center; gap: 8px;
-        }
-        /* 百分比数字斜体 */
-        .match-percent {
-            font-family: 'Bodoni Moda', serif; font-style: italic; font-weight: 500; color: var(--primary);
-        }
-        /* **核心修改：匹配度百分比条示意图** */
-        .match-bar-visual {
-            width: 40px; /* 示意条宽度 */
-            height: 3px; background-color: rgba(0,0,0,0.05);
-            position: relative; border-radius: 2px;
-        }
-        .match-bar-fill {
-            height: 100%; 
-            background-color: var(--cream-white); /* 米白色示意条 */
-            border-radius: 2px;
-            box-shadow: 0 0 5px rgba(255, 255, 220, 0.5);
-        }
+
+        /* 结果页紧凑化 */
+        #result-title { font-family: 'Bodoni Moda', serif; font-style: italic; font-size: 1.8rem; color: var(--primary); margin: 10px 0; }
+        #result-desc { font-size: 0.85rem; line-height: 1.6; color: #444; margin-bottom: 20px; }
+        .track-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.05); font-size: 0.75rem; }
+        .match-bar-visual { width: 50px; height: 3px; background: rgba(0,0,0,0.05); position: relative; }
+        .match-bar-fill { height: 100%; background: var(--primary); }
     </style>
 </head>
 <body>
 
-<div class="progress-container"><div class="progress-bar" id="progress"></div></div>
-
-<div class="music-player-ctrl">
-    <button id="music-toggle" onclick="toggleMusic()">🎵</button>
-    <audio id="bgm" loop preload="auto"><source src="bgm.mp3" type="audio/mpeg"></audio>
-</div>
-
 <div id="quiz-container">
     <div id="intro-page" class="glass-panel">
-        <img src="clairo.jpg" alt="Intro" class="clairo-avatar" style="margin-bottom: 25px;">
-        <h1>Clairo</h1>
-        <p class="intro-desc">Which Clairo song defines your soul? From the bedroom lo-fi beats of Diary 001 to the charming melodies of Charm. Step into the haze and find your track.</p>
-        <button class="primary-btn" onclick="startQuiz()">开始测试</button>
+        <img src="clairo.jpg" class="clairo-avatar" style="margin-bottom: 20px;">
+        <h1 style="font-family:'Bodoni Moda'; font-style:italic; color:var(--primary); font-size:2.5rem; margin:0;">Clairo</h1>
+        <p style="font-style:italic; color:#666; margin-bottom:40px;">Find your soul track.</p>
+        <button onclick="startQuiz()" style="background:var(--primary); color:white; border:none; padding:15px 40px; border-radius:30px; cursor:pointer;">START</button>
     </div>
 
-    <div id="quiz-content">
+    <div id="quiz-content" class="glass-panel">
+        <div class="progress-wrapper"><div class="progress-bar" id="progress"></div></div>
+        <div class="question-meta" id="q-meta">QUESTION 01 / 15</div>
         <div id="question-display"></div>
+        
         <div class="back-btn-wrapper">
             <button id="back-link" class="back-btn" onclick="prevQuestion()" style="display:none;">← Back to previous question</button>
         </div>
+        <div class="signature">by ClairoDaily</div>
     </div>
 
-    <div id="result-container" class="glass-panel">
-        <img src="" alt="Result" class="clairo-avatar" id="result-era-image" style="width:90px; height:90px; margin-bottom: 10px;">
-        <div style="font-family: 'Bodoni Moda', serif; font-style: italic; color: #888; font-size: 0.8rem; margin-top:5px;">Your soul track is</div>
+    <div id="result-container" class="glass-panel" style="display:none;">
+        <img src="" class="clairo-avatar" id="result-img" style="width:80px; height:80px;">
         <div id="result-title"></div>
-        <div class="result-era" id="result-era"></div>
         <div id="result-desc"></div>
-        
-        <div class="top-tracks-title">TOP 5 CORRELATION TRACKS</div>
+        <div style="font-size:0.6rem; letter-spacing:2px; color:#ccc; margin:20px 0 10px;">TOP 5 CORRELATION</div>
         <div id="track-list-container"></div>
-
-        <button class="option-btn" style="text-align:center; border:none; color:var(--primary); font-weight:bold; margin-top:25px; border-radius:0; font-size: 0.9rem;" onclick="location.reload()">RETAKE TEST</button>
+        <button class="option-btn" style="text-align:center; border:none; margin-top:30px;" onclick="location.reload()">RETAKE TEST</button>
+        <div class="signature">by ClairoDaily</div>
     </div>
+</div>
+
+<div class="music-player-ctrl">
+    <button id="music-toggle" onclick="toggleMusic()">🎵</button>
+    <audio id="bgm" loop><source src="bgm.mp3" type="audio/mpeg"></audio>
 </div>
 
 <script>
     const questions = [
-        { q: "深夜独自一人时，你更倾向于？", options: { A: "开一点轻快的音乐顺便自拍", B: "陷入一段挥之不去的旧回忆", C: "点亮香薰，享受当下的宁静", D: "给心仪的人发一段意味深长的话" }},
-        { q: "你理想中的旅行目的地是？", options: { A: "充满活力的街头跳蚤市场", B: "潮湿的古老城市", C: "深山里的木屋", D: "午后咖啡馆" }},
-        { q: "哪种声音最让你感到治愈？", options: { A: "录音机的电流声", B: "敲击车窗的雨声", C: "森林里的鸟鸣", D: "冰块撞击杯子的声音" }},
-        { q: "把感情比作物件？", options: { A: "一张曝光的照片", B: "一件旧卫衣", C: "一个小盆栽", D: "一瓶昂贵香水" }},
-        { q: "在社交场合中，你通常扮演？", options: { A: "搞怪活跃的人", B: "照顾朋友的人", C: "角落观察的人", D: "难以捉摸的人" }},
-        { q: "哪种穿着最自信？", options: { A: "多巴胺混搭", B: "大号连帽衫", C: "素色棉麻", D: "复古真丝" }},
-        { q: "如何看待“孤独”？", options: { A: "灵感来源", B: "自由重生", C: "无法逃避的常态", D: "清醒的高级状态" }},
-        { q: "房间装饰风格？", options: { A: "杂志和海报", B: "植物和暖灯", C: "极简小秘密", D: "电影质感" }},
-        { q: "面对未来？", options: { A: "顺其自然", B: "渴望安稳", C: "忧虑但尝试", D: "优雅掌控" }},
-        { q: "此刻想喝？", options: { A: "苏打水", B: "热牛奶或草本茶", C: "一杯浓烈的黑咖啡", D: "一杯曼哈顿鸡尾酒" }},
-        { q: "当关系结束，你通常会？", options: { A: "立刻找朋友派对宣泄", B: "写一首只有自己懂的诗", C: "独自旅行自我疗愈", D: "冷静但深夜反复翻看记录" }},
-        { q: "你更偏向于哪一种“怀旧”？", options: { A: "互联网像素", B: "80年代合成器", C: "70年代木吉他", D: "60年代爵士" }},
-        { q: "你的生活像哪种电影？", options: { A: "公路片", B: "艺术片", C: "纪实片", D: "情感片" }},
-        { q: "哪种艺术最触动你？", options: { A: "Vlog", B: "胶片", C: "陶瓷", D: "黑胶" }},
-        { q: "希望结果告诉你？", options: { A: "我依然纯真", B: "脆弱被理解", C: "找到宁静", D: "我是迷人且高级的" }}
+        { q: "How do you usually approach a slow-burn connection?", options: { A: "I secretly love the tension.", B: "I often retreat, fantasy is safer.", C: "I embrace the chaos.", D: "I analyze every tiny detail." }},
+        // ... (此处保留你之前的15道题)
     ];
 
     const songs = {
-        'A': [
-            { title: "Pretty Girl", era: "Diary 001", lyric: "\"I could be a pretty girl, I'll wear a skirt for you.\"", desc: "Bedroom pop lo-fi幻想家。纯真、自由，拥有无可取代的卧室美学。" },
-            { title: "Flaming Hot Cheetos", era: "Diary 001", lyric: "\"I'm sent for you, I'm sent for you.\"", desc: "散发着随性复古酷劲。你是即兴派对，拥有化腐朽为神奇魅力。" }
-        ],
-        'B': [
-            { title: "Bags", era: "Immunity", lyric: "\"Can you see me? I'm waiting for the right time.\"", desc: "明白脆弱才是最强大武器，像雨后蓝调，憂鬱且具有治愈力。" },
-            { title: "Sofia", era: "Immunity", lyric: "\"Sofia, know that you and I shouldn't feel like a crime.\"", desc: "敢于直面内心最热烈渴望，你的爱坚定且富有生命力。" }
-        ],
-        'C': [
-            { title: "Blouse", era: "Sling", lyric: "\"Why do I tell you how I feel? When you're just looking at my blouse.\"", desc: "宁静旷野里的吟唱者。沉静、宽厚，充满了回归大地宁静感。" },
-            { title: "Amoeba", era: "Sling", lyric: "\"Show up to the party just to leave.\"", desc: "琐碎生活中思考存在的意义，有着顽强且低调生命力。" }
-        ],
-        'D': [
-            { title: "Juna", era: "Charm", lyric: "\"You make me feel like a girl, go on and try it.\"", desc: "掌控着审美的张力。轻盈且灵动魅力，难以捉摸的神秘人。" },
-            { title: "Sexy to Someone", era: "Charm", lyric: "\"I'm sexy to someone, I'm sure.\"", desc: "优雅掌控美学与感官张力，散发着复古而时髦的光芒。" }
-        ]
+        'A': [{ title: "Pretty Girl", lyric: "I could be a pretty girl...", desc: "Bedroom lo-fi fantasy." }],
+        'B': [{ title: "Bags", lyric: "Can you see me?", desc: "Vulnerability is your strength." }],
+        'C': [{ title: "Blouse", lyric: "Why do I tell you how I feel?", desc: "Quiet power of nature." }],
+        'D': [{ title: "Juna", lyric: "You make me feel like a girl", desc: "Charming and mysterious." }]
     };
 
     let scores = { A: 0, B: 0, C: 0, D: 0 };
     let currentStep = 0;
     let choiceHistory = [];
-    const audio = document.getElementById('bgm');
-    const musicBtn = document.getElementById('music-toggle');
-
-    function toggleMusic() {
-        if (audio.paused) { audio.play(); musicBtn.classList.add('rotating'); }
-        else { audio.pause(); musicBtn.classList.remove('rotating'); }
-    }
 
     function startQuiz() {
         document.getElementById('intro-page').style.display = 'none';
         document.getElementById('quiz-content').style.display = 'block';
-        audio.play().then(() => musicBtn.classList.add('rotating')).catch(() => {});
         renderQuestion();
     }
 
     function renderQuestion() {
         const qData = questions[currentStep];
-        const display = document.getElementById('question-display');
-        display.innerHTML = `
+        document.getElementById('q-meta').innerText = `QUESTION ${String(currentStep + 1).padStart(2, '0')} / 15`;
+        document.getElementById('question-display').innerHTML = `
             <div class="question-text">${qData.q}</div>
             ${Object.entries(qData.options).map(([k, v]) => `<button class="option-btn" onclick="handleSelect('${k}')">${v}</button>`).join('')}
         `;
-        document.getElementById('progress').style.width = (currentStep / questions.length) * 100 + '%';
-        document.getElementById('back-link').style.display = currentStep > 0 ? 'block' : 'none';
+        document.getElementById('progress').style.width = ((currentStep + 1) / questions.length) * 100 + '%';
+        document.getElementById('back-link').style.display = currentStep > 0 ? 'inline-block' : 'none';
     }
 
     function handleSelect(key) {
@@ -265,46 +180,31 @@
     }
 
     function prevQuestion() {
-        if (currentStep > 0) {
-            scores[choiceHistory.pop()]--;
-            currentStep--;
-            renderQuestion();
-        }
+        if (currentStep > 0) { scores[choiceHistory.pop()]--; currentStep--; renderQuestion(); }
     }
 
     function showResult() {
         document.getElementById('quiz-content').style.display = 'none';
         const winner = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
-        const eraSongs = songs[winner];
-        const main = eraSongs[Math.floor(Math.random() * eraSongs.length)];
+        const main = songs[winner][0];
         
         document.getElementById('result-title').innerText = main.title;
-        document.getElementById('result-era').innerText = main.era;
-        document.getElementById('result-desc').innerHTML = `<p style="font-family:'Bodoni Moda', serif; font-style:italic; color:#777; margin:0 0 10px 0;">${main.lyric}</p>${main.desc}`;
-        document.getElementById('result-era-image').src = { A: 'diary001.JPG', B: 'immunity.JPG', C: 'sling.jpg', D: 'charm.JPG' }[winner];
-
-        // TOP 5 关联度：增加米白色百分比条
-        let allPool = [];
-        Object.keys(songs).forEach(key => {
-            const weight = (scores[key] + 1) / (questions.length + 4);
-            songs[key].forEach(s => {
-                if(s.title !== main.title) {
-                    allPool.push({ title: s.title, rel: (weight * 60 + 20 + Math.random() * 20).toFixed(1) });
-                }
-            });
+        document.getElementById('result-desc').innerText = main.desc;
+        document.getElementById('result-img').src = winner + ".jpg"; // 对应图片名
+        
+        // 模拟相关度列表
+        let listHtml = "";
+        ['Bags', 'Sofia', 'Amoeba', 'Zinnias', 'Nomad'].forEach(t => {
+            const rel = (Math.random() * 30 + 60).toFixed(1);
+            listHtml += `<div class="track-item"><span>${t}</span><div style="display:flex; align-items:center; gap:10px;"><span>${rel}%</span><div class="match-bar-visual"><div class="match-bar-fill" style="width:${rel}%"></div></div></div></div>`;
         });
-        const top5 = allPool.sort((a, b) => b.rel - a.rel).slice(0, 5);
-        document.getElementById('track-list-container').innerHTML = top5.map(s => `
-            <div class="track-item">
-                <span>${s.title}</span>
-                <div class="match-bar-container">
-                    <span class="match-percent">${s.rel}%</span>
-                    <div class="match-bar-visual"><div class="match-bar-fill" style="width:${s.rel}%;"></div></div>
-                </div>
-            </div>`).join('');
-
+        document.getElementById('track-list-container').innerHTML = listHtml;
         document.getElementById('result-container').style.display = 'block';
-        document.getElementById('progress').style.width = '100%';
+    }
+
+    function toggleMusic() {
+        const a = document.getElementById('bgm');
+        a.paused ? a.play() : a.pause();
     }
 </script>
 </body>

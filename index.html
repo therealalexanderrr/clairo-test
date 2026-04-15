@@ -9,7 +9,8 @@
         :root {
             --primary: #6b7a6d;
             --bg-filter: linear-gradient(rgba(245, 242, 235, 0.5), rgba(234, 221, 202, 0.5));
-            --glass-block: rgba(255, 255, 255, 0.9);
+            /* 提高透明度的白色背景，用于气泡 */
+            --glass-block: rgba(255, 255, 255, 0.6); 
             --cream-white: #f5f5dc;
         }
 
@@ -22,6 +23,7 @@
             min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased;
         }
 
+        /* 顶部米白色进度条 */
         .progress-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 5px;
             background-color: rgba(255, 255, 255, 0.2); z-index: 1000;
@@ -36,7 +38,8 @@
         .glass-panel {
             background: rgba(255, 255, 255, 0.88); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             padding: 45px 25px; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            /* 去掉大阴影，保持极简 */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
         }
 
         .music-player-ctrl { position: absolute; top: 20px; right: 20px; z-index: 100; }
@@ -58,27 +61,43 @@
         .intro-desc { font-family: 'Bodoni Moda', serif; font-style: italic; font-size: 1rem; line-height: 1.6; color: #555; margin-bottom: 35px; }
 
         #quiz-content { display: none; text-align: left; }
+        
         .question-text {
             font-family: "STSong", "SimSun", "Songti SC", serif; font-size: 1.2rem; margin-bottom: 25px; 
-            font-weight: 600; color: #000; background: var(--glass-block); padding: 22px; border-radius: 18px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.03); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            font-weight: 600; color: #000; background: var(--glass-block); padding: 22px; 
+            border-radius: 0; /* 问题背景也改为直角 */
+            border: 1px solid rgba(255,255,255,0.3);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
         }
 
+        /* **核心修改：选项按钮 - 长方形、高透明度** */
         .option-btn {
-            display: block; width: 100%; background: var(--glass-block); border: 1px solid rgba(255,255,255,0.4);
-            padding: 18px 20px; margin-bottom: 12px; border-radius: 14px; cursor: pointer; color: #000;
-            font-family: "STSong", "SimSun", "Songti SC", serif; font-style: italic; font-size: 1.05rem;
-            text-align: left; transition: 0.2s; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            display: block; width: 100%; 
+            background: rgba(255, 255, 255, 0.6); /* **提高透明度** */
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 18px 20px; margin-bottom: 12px; 
+            border-radius: 0; /* **改为长方形（直角）** */
+            cursor: pointer; color: #000;
+            font-family: "STSong", "SimSun", "Songti SC", serif; font-style: italic; 
+            font-size: 1.05rem; text-align: left; transition: 0.2s;
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); /* 稍微降低毛玻璃，更透光 */
         }
-        .option-btn:hover { background: white; transform: translateX(4px); border-color: var(--primary); }
+        .option-btn:hover { 
+            background: rgba(255, 255, 255, 0.85); /* 悬浮时稍微变白 */
+            transform: translateX(4px); 
+            border-color: var(--primary); 
+        }
 
+        /* 返回按钮区域 */
         .back-btn-wrapper { margin-top: 30px; display: flex; justify-content: center; }
         .back-btn {
-            background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
-            color: var(--primary); border: 1px solid rgba(255, 255, 255, 0.3); 
+            background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+            color: var(--primary); border: 1px solid rgba(255, 255, 255, 0.2); 
             padding: 8px 20px; border-radius: 20px; font-size: 0.8rem;
             cursor: pointer; font-style: italic; transition: 0.3s;
         }
+
+        .primary-btn { background: var(--primary); color: white; border: none; padding: 16px 50px; border-radius: 30px; font-size: 1rem; cursor: pointer; font-weight: 500; }
 
         #result-container { display: none; }
         .result-era {
@@ -86,7 +105,6 @@
             background: rgba(107, 122, 109, 0.1); padding: 5px 15px; border-radius: 15px; display: inline-block; margin: 15px 0;
         }
         #result-desc { font-family: "STSong", "SimSun", "Songti SC", serif; line-height: 1.8; color: #222; text-align: justify; }
-        .primary-btn { background: var(--primary); color: white; border: none; padding: 16px 50px; border-radius: 30px; font-size: 1rem; cursor: pointer; font-weight: 500; }
     </style>
 </head>
 <body>
@@ -116,10 +134,10 @@
     <div id="result-container" class="glass-panel">
         <img src="" alt="Result" class="clairo-avatar" id="result-era-image" style="width:100px; height:100px;">
         <div style="font-family: 'Bodoni Moda', serif; font-style: italic; color: #888; margin-top:15px;">Your soul track is</div>
-        <div id="result-title" style="font-size: 2.2rem; min-height: 3rem; display: flex; align-items: center; justify-content: center;"></div>
+        <div id="result-title" style="font-size: 2.4rem;"></div>
         <div class="result-era" id="result-era"></div>
         <div id="result-desc"></div>
-        <button class="option-btn" style="text-align:center; border:none; color:var(--primary); font-weight:bold; margin-top:30px;" onclick="location.reload()">RETAKE TEST</button>
+        <button class="option-btn" style="text-align:center; border:none; color:var(--primary); font-weight:bold; margin-top:30px; border-radius:0;" onclick="location.reload()">RETAKE TEST</button>
     </div>
 </div>
 
@@ -143,34 +161,10 @@
     ];
 
     const songs = {
-        'A': [
-            { title: "Pretty Girl", era: "Diary 001", desc: "你是卧室里的 lo-fi 幻想家，哪怕生活模糊不清，也能把它变成艺术。" },
-            { title: "Flaming Hot Cheetos", era: "Diary 001", desc: "你拥有最古灵精怪的灵魂，在自嘲与浪漫之间保持着完美的平衡。" },
-            { title: "4EVER", era: "Diary 001", desc: "你向往永恒的夏日友谊，复古且充满活力的节奏是你生活的底色。" },
-            { title: "Hello?", era: "Diary 001", desc: "你总是那个先开口问候的人，内心充满好奇，带着一点青涩的探索欲。" },
-            { title: "B.O.M.D.", era: "Diary 001", desc: "你是纯真美学的代言人，总是能在人群中一眼发现那个让你心跳加速的梦中人。" }
-        ],
-        'B': [
-            { title: "Bags", era: "Immunity", desc: "明白脆弱才是最强大的武器。你在情感的拉扯中学会了如何优雅地安放内心。" },
-            { title: "Sofia", era: "Immunity", desc: "你敢于直面内心深处最热烈的渴望，你的爱如同这首歌一样，坚定且富有生命力。" },
-            { title: "Alewife", era: "Immunity", desc: "你有一颗细腻且知恩图报的心。在最黑暗的时刻，你总能找到那根救命稻草。" },
-            { title: "Softly", era: "Immunity", desc: "你温柔地对待这个世界，也希望被世界温柔以待。轻盈的节奏是你对自由的向往。" },
-            { title: "Impossible", era: "Immunity", desc: "你是一个清醒的浪漫主义者。明白遗憾是常态，但在遗憾中依然保持着独特的审美。" }
-        ],
-        'C': [
-            { title: "Blouse", era: "Sling", desc: "宁静旷野里的吟唱者。你沉静、宽厚，充满了回归大地的宁静感，懂得温柔的力量。" },
-            { title: "Amoeba", era: "Sling", desc: "你在琐碎的生活中思考存在的意义，像阿米巴原虫一样有着顽强且低调的生命力。" },
-            { title: "Zinnias", era: "Sling", desc: "你向往田园牧歌般的自由，渴望在属于自己的土地上种下希望，简单而纯粹。" },
-            { title: "Just For Today", era: "Sling", desc: "你是一个深情的观察者，明白有些情感只需要在“今天”得到宣泄和理解。" },
-            { title: "Management", era: "Sling", desc: "你在寻找掌控生活的能力，虽然过程有些迷茫，但最终会在音乐中找到秩序。" }
-        ],
-        'D': [
-            { title: "Juna", era: "Charm", desc: "掌控着审美的张力。你是社交场合中难以捉摸的神秘人，轻盈且富有魅力。" },
-            { title: "Sexy to Someone", era: "Charm", desc: "你自信地展示着自己的张力，这种渴望被看见的能量让你在人群中熠熠生辉。" },
-            { title: "Add Up My Love", era: "Charm", desc: "你对感情有着精准的计算和热烈的投入，复古的合成器节奏是你多情的跳动。" },
-            { title: "Terrapin", era: "Charm", desc: "你像一只优雅的玳瑁，在时间的流动中慢慢爬行，不急不躁，享受当下的质感。" },
-            { title: "Nomad", era: "Charm", desc: "你有一颗流浪的心，不愿被任何定义束缚。你在不同的情绪中迁徙，寻找真正的自我。" }
-        ]
+        'A': [{ title: "Pretty Girl", era: "Diary 001", desc: "你是卧室里的 lo-fi 幻想家。哪怕生活模糊不清，也能把它变成艺术。纯真、自由，拥有无可取代的卧室美学。" }],
+        'B': [{ title: "Bags", era: "Immunity", desc: "你是时代最深刻的灵魂。明白脆弱才是最强大的武器。憂鬱却具有治愈他人的力量。" }],
+        'C': [{ title: "Blouse", era: "Sling", desc: "宁静旷野里的吟唱者。你沉静、宽厚，充满了回归大地的宁静感，懂得温柔的力量。" }],
+        'D': [{ title: "Juna", era: "Charm", desc: "轻盈且灵动的魅力，掌控着审美的张力，是社交场合中难以捉摸的神秘人。" }]
     };
 
     let scores = { A: 0, B: 0, C: 0, D: 0 };
@@ -219,20 +213,13 @@
 
     function showResult() {
         document.getElementById('quiz-content').style.display = 'none';
-        
-        // 1. 找到最高分的分类
         const winner = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
-        
-        // 2. 从该分类的5首歌中随机抽取一首（这样同一专辑会有不同结果）
-        const albumSongs = songs[winner];
-        const final = albumSongs[Math.floor(Math.random() * albumSongs.length)];
-        
+        const final = songs[winner][0];
         const img = document.getElementById('result-era-image');
         if(winner === 'A') img.src = 'diary001.JPG';
         else if(winner === 'B') img.src = 'immunity.JPG';
         else if(winner === 'C') img.src = 'sling.jpg';
         else img.src = 'charm.JPG';
-
         document.getElementById('result-title').innerText = final.title;
         document.getElementById('result-era').innerText = final.era;
         document.getElementById('result-desc').innerText = final.desc;

@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Clairo Song Soulmate Test</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,400;1,500;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #6b7a6d;
+            --primary: #6b7a6d; /* Charm 绿色 */
             --bg-filter: linear-gradient(rgba(245, 242, 235, 0.4), rgba(234, 221, 202, 0.4));
             --glass-white: rgba(255, 255, 255, 0.45); 
             --cream-white: #f5f5dc;
@@ -23,35 +23,35 @@
 
         #quiz-container { width: 92%; max-width: 400px; position: relative; z-index: 2; padding: 20px 0; }
 
-        /* 统一的玻璃面板：题目和选项都在这里面 */
         .glass-panel {
             background: var(--glass-white); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
             padding: 40px 25px; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: left; /* 整体左对齐 */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: left;
         }
 
-        /* 顶部进度条 */
         .progress-wrapper { width: 100%; height: 2px; background: rgba(0,0,0,0.05); margin-bottom: 25px; }
         .progress-bar { height: 100%; background-color: var(--primary); width: 0%; transition: width 0.4s ease; }
 
-        /* 题目样式 */
-        .question-meta { font-size: 0.65rem; letter-spacing: 2px; color: #888; text-transform: uppercase; margin-bottom: 12px; display: block;}
+        .question-meta { font-size: 0.65rem; letter-spacing: 2px; color: #888; text-transform: uppercase; margin-bottom: 12px; display: block; }
         .question-text {
             font-family: 'Bodoni Moda', serif; font-size: 1.45rem; line-height: 1.3;
             color: #1a1a1a; font-weight: 500; margin-bottom: 35px;
         }
 
-        /* 选项按钮：保持直角，透明底色 */
+        /* 选项按钮：精致正体、居中、增加间距 */
         .option-btn {
-            display: block; width: 100%; background: rgba(255, 255, 255, 0.2); 
-            border: 1px solid rgba(255, 255, 255, 0.3); padding: 18px 0; margin-bottom: 5px; 
-            border-radius: 0; cursor: pointer; color: #333;
-            font-family: "STSong", serif; font-style: italic; font-size: 1.05rem; text-align: left; transition: 0.3s;
-            border-left: none; border-right: none; border-top: none; /* 极简线条感 */
+            display: block; width: 100%; background: rgba(255, 255, 255, 0.15); 
+            border: 1px solid rgba(255, 255, 255, 0.2); padding: 18px 10px; margin-bottom: 8px; 
+            border-radius: 0; cursor: pointer; color: #222;
+            /* 字体更新：使用正体 Bodoni，增加字间距 */
+            font-family: 'Bodoni Moda', serif; font-style: normal; font-weight: 400;
+            font-size: 0.95rem; letter-spacing: 0.5px; 
+            text-align: center; /* 居中处理 */
+            transition: all 0.4s ease;
+            border-left: none; border-right: none; border-top: none; 
         }
-        .option-btn:hover { padding-left: 10px; background: rgba(255, 255, 255, 0.4); border-bottom-color: var(--primary); }
+        .option-btn:hover { background: rgba(255, 255, 255, 0.5); border-bottom-color: var(--primary); letter-spacing: 2px; }
 
-        /* 返回按钮：圆角胶囊 */
         .back-btn-wrapper { margin-top: 30px; display: flex; justify-content: center; }
         .back-btn {
             background: var(--glass-white); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
@@ -59,15 +59,11 @@
             border-radius: 20px; font-size: 0.75rem; cursor: pointer; font-style: italic;
         }
 
-        /* 署名：Charm 绿色 */
         .signature { margin-top: 30px; font-size: 0.7rem; color: var(--primary); font-family: 'Bodoni Moda', serif; font-style: italic; letter-spacing: 1px; text-align: center; }
 
-        /* 音乐控制 */
         .music-player-ctrl { position: absolute; top: 20px; right: 20px; z-index: 100; }
         #music-toggle { background: rgba(255, 255, 255, 0.5); border: none; border-radius: 50%; width: 36px; height: 36px; cursor: pointer; }
 
-        /* 结果页特化 */
-        .res-center { text-align: center ! pole; }
         .clairo-avatar { width: 95px; height: 95px; border-radius: 50%; object-fit: cover; border: 3px solid white; display: block; margin: 0 auto; }
         #result-title { font-family: 'Bodoni Moda', serif; font-style: italic; font-size: 2.1rem; color: var(--primary); margin: 15px 0 5px; text-align: center; }
         .lyric-box { font-family: 'Bodoni Moda', serif; font-style: italic; color: #999; font-size: 0.85rem; margin-bottom: 20px; line-height: 1.4; text-align: center; }

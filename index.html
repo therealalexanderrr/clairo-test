@@ -10,7 +10,7 @@
             --primary: #6b7a6d;
             --bg-filter: linear-gradient(rgba(245, 242, 235, 0.5), rgba(234, 221, 202, 0.5));
             --glass-block: rgba(255, 255, 255, 0.9);
-            --cream-white: #f5f5dc; /* 米白色 */
+            --cream-white: #f5f5dc;
         }
 
         body {
@@ -22,17 +22,14 @@
             min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased;
         }
 
-        /* 进度条：固定在页面最顶端，米白色 */
+        /* 顶部米白色进度条 */
         .progress-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 5px;
             background-color: rgba(255, 255, 255, 0.2); z-index: 1000;
         }
         .progress-bar { 
-            height: 100%; 
-            background-color: var(--cream-white); 
-            width: 0%; 
-            transition: width 0.4s ease;
-            box-shadow: 0 0 10px rgba(255, 255, 220, 0.5);
+            height: 100%; background-color: var(--cream-white); width: 0%; 
+            transition: width 0.4s ease; box-shadow: 0 0 10px rgba(255, 255, 220, 0.5);
         }
 
         #quiz-container { width: 82%; max-width: 380px; position: relative; text-align: center; z-index: 2; }
@@ -62,6 +59,7 @@
         .intro-desc { font-family: 'Bodoni Moda', serif; font-style: italic; font-size: 1rem; line-height: 1.6; color: #555; margin-bottom: 35px; }
 
         #quiz-content { display: none; text-align: left; }
+        
         .question-text {
             font-family: "STSong", "SimSun", "Songti SC", serif; font-size: 1.2rem; margin-bottom: 25px; 
             font-weight: 600; color: #000; background: var(--glass-block); padding: 22px; border-radius: 18px;
@@ -76,10 +74,20 @@
         }
         .option-btn:hover { background: white; transform: translateX(4px); border-color: var(--primary); }
 
-        .back-btn {
-            background: transparent; color: var(--primary); border: none; font-size: 0.85rem;
-            cursor: pointer; margin-top: 10px; opacity: 0.6; font-style: italic; display: block; width: 100%; text-align: center;
+        /* 返回按钮样式升级 */
+        .back-btn-wrapper {
+            margin-top: 30px; /* 往下放一点 */
+            display: flex; justify-content: center;
         }
+        .back-btn {
+            background: rgba(255, 255, 255, 0.5); /* 半透明背景 */
+            backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+            color: var(--primary); border: 1px solid rgba(255, 255, 255, 0.3); 
+            padding: 8px 20px; border-radius: 20px; font-size: 0.8rem;
+            cursor: pointer; font-style: italic; transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+        }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.8); }
 
         .primary-btn { background: var(--primary); color: white; border: none; padding: 16px 50px; border-radius: 30px; font-size: 1rem; cursor: pointer; font-weight: 500; }
 
@@ -93,9 +101,7 @@
 </head>
 <body>
 
-<div class="progress-container">
-    <div class="progress-bar" id="progress"></div>
-</div>
+<div class="progress-container"><div class="progress-bar" id="progress"></div></div>
 
 <div class="music-player-ctrl">
     <button id="music-toggle" onclick="toggleMusic()">🎵</button>
@@ -112,7 +118,9 @@
 
     <div id="quiz-content">
         <div id="question-display"></div>
-        <button id="back-link" class="back-btn" onclick="prevQuestion()" style="display:none;">← Back to previous question</button>
+        <div class="back-btn-wrapper">
+            <button id="back-link" class="back-btn" onclick="prevQuestion()" style="display:none;">← Previous Question</button>
+        </div>
     </div>
 
     <div id="result-container" class="glass-panel">
@@ -207,7 +215,6 @@
         document.getElementById('result-title').innerText = final.title;
         document.getElementById('result-era').innerText = final.era;
         document.getElementById('result-desc').innerText = final.desc;
-        document.getElementById('result-container').classList.add('glass-panel');
         document.getElementById('result-container').style.display = 'block';
         document.getElementById('progress').style.width = '100%';
     }

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clairo Personality Test | 你的克莱罗人格</title>
+    <style>
+        :root {
+            --bg-color: #f5f2eb;
+            --text-color: #3d3d3d;
+            --accent-color: #7d8c7e; 
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Lora', 'Georgia', serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #quiz-container {
+            width: 90%;
+            max-width: 550px;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 2px; /* 更加方正的复古感 */
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            text-align: center;
+            border: 1px solid #e0ddd5;
+        }
+
+        h1 { font-weight: 400; font-size: 1.6rem; margin-bottom: 10px; letter-spacing: 2px; text-transform: uppercase; }
+        .subtitle { font-size: 0.9rem; color: #888; margin-bottom: 30px; }
+
+        .question { display: none; }
+        .question.active { display: block; animation: fadeIn 0.4s; }
+
+        .options-list { list-style: none; padding: 0; margin-top: 25px; }
+        .option-btn {
+            background: none;
+            border: 1px solid #eee;
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            color: var(--text-color);
+            font-size: 0.95rem;
+            text-align: left;
+        }
+
+        .option-btn:hover {
+            background-color: #fdfcf8;
+            border-color: var(--accent-color);
+            padding-left: 20px;
+        }
+
+        #result-container { display: none; }
+        #result-title { font-size: 1.8rem; color: var(--accent-color); margin: 20px 0; }
+        #result-desc { font-size: 1rem; color: #666; line-height: 1.8; text-align: justify; }
+
+        .progress-bar { height: 2px; background: #eee; margin-bottom: 40px; }
+        .progress-inner { height: 100%; background: var(--accent-color); width: 0%; transition: width 0.3s; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <div id="intro">
+        <h1>Clairo Era</h1>
+        <p class="subtitle">10 Questions to find your inner melody</p>
+        <button class="option-btn" style="text-align:center; background:var(--accent-color); color:white;" onclick="startQuiz()">开始寻找</button>
+    </div>
+
+    <div id="quiz-content" style="display:none;">
+        <div class="progress-bar"><div class="progress-inner" id="progress"></div></div>
+        
+        <div class="question active" id="q1">
+            <p>1. 如果要记录生活，你更倾向于用哪种方式？</p>
+            <div class="options-list">
+                <button class="option-btn" onclick="nextQuestion('A')">手机前置镜头，随性且低像素的自拍</button>
+                <button class="option-btn" onclick="nextQuestion('B')">过期的胶片相机，捕捉光影的残缺</button>
+                <button class="option-btn" onclick="nextQuestion('C')">手写的日记，记录每一丝细微的情绪</button>
+                <button class="option-btn" onclick="nextQuestion('D')">精致的黑胶唱片或有设计感的画册</button>
+            </div>
+        </div>
+
+        <div class="question" id="q2">
+            <p>2. 在一段拥挤的派对中，你通常在哪里？</p>
+            <div class="options-list">
+                <button class="option-btn" onclick="nextQuestion('A')">在舞池中央，和朋友们打闹</button>
+                <button class="option-btn" onclick="nextQuestion('B')">在阳台抽烟或透气，思考为什么自己在这</button>
+                <button class="option-btn" onclick="nextQuestion('C')">在角落里逗主人的猫</button>
+                <button class="option-btn" onclick="nextQuestion('D')">在吧台和陌生人进行一场迷人的短对话</button>
+            </div>
+        </div>
+
+        <div class="question" id="q3">
+            <p>3. 哪种天气让你觉得最有安全感？</p>
+            <div class="options-list">
+                <button class="option-btn" onclick="nextQuestion('A')">夕阳西下，金色的余晖洒进卧室</button>
+                <button class="option-btn" onclick="nextQuestion('B')">阴沉沉的雨天，适合流泪和想念</button>
+                <button class="option-btn" onclick="nextQuestion('C')">初冬的下雪天，万籁俱寂</button>
+                <button class="option-btn" onclick="nextQuestion('D')">暖和的午后，微风吹动窗帘</button>
+            </div>
+        </div>
+
+        <div class="question" id="q4">
+            <p>4. 你如何处理心碎的感觉？</p>
+            <div class="options-list">
+                <button class="option-btn" onclick="nextQuestion('A')">听轻快的歌去覆盖它，假装不在意</button>
+                <button class="option-btn" onclick="nextQuestion('B')">反复剖析这段感情，直到它变成疤痕</button>
+                <button class="option-btn" onclick="nextQuestion('C')">寻求家人的陪伴或回归最简单的生活</button>
+                <button class="option-btn" onclick="nextQuestion('D')">把它变成一段迷人的往事，优雅地挥别</button>
+            </div>
+        </div>
+
+        <div class="question" id="q5">
+            <p>5. 选一件你最喜欢的时尚单品：</p>
+            <div class="options-list">
+                <button class="option-btn" onclick="nextQuestion('A')">色彩斑斓的针织衫或发夹</button>
+                <button class="option-btn" onclick="nextQuestion('B')">宽大的深色卫衣</button>
+                <button class="option-btn" onclick="nextQuestion('C')">棉麻质地的长裙或厚羊毛衫</button>
+                <button class="option-btn" onclick="nextQuestion('D')">复古的真丝衬衫或精巧的手表</button>
+            </div>
+        </div>
+
+        <div class="question" id="q6">
+            <p>6. 你觉得“爱”更像是什么？</p>
+            <div class="options-list">
+                <button class="option-btn" onclick="nextQuestion('A')">一阵让人眩晕的夏日晚风</button>
+                <button class="option-btn" onclick="nextQuestion('B')">一种令人窒息但又沉溺的依赖感</button>
+                <button class="option-btn" onclick="nextQuestion('C')">一种长久的陪伴与互相治愈</button>
+                <button class="option-btn" onclick="nextQuestion('D')">一场充满张力和博弈的舞蹈</button>
+            </div>
+        </div>
+
+        <div class="question" id="q7">
+            <p>7. 如果你可以穿越回过去，你会去：</p>
+            <div class="options-list">
+                <button class="option-btn" onclick="nextQuestion('A')">2010年代初的互联网世界</button>
+                <button class="option-btn" onclick="nextQuestion('B')">90年代的摇滚俱乐部</button>
+                <button class="option-btn" onclick="nextQuestion('C')">70年代安静的乡村牧场</button>
+                <button class="option-btn" onclick="nextQuestion('D')">70年代末华丽的爵士沙龙</button>
+            </div>
+        </div>
+
+        <div class="question" id="q8">
+            <p>8. 你最讨厌什么样的人？</p>
+            <div class="options-list">
+                <button class="option-btn" onclick="nextQuestion('A')">过于严肃、没有幽默感的人</button>
+                <button class="option-btn" onclick="nextQuestion('B')">虚伪、不敢直面真实情感的人</button>
+                <button class="option-btn" onclick="nextQuestion('C')">喧闹、不懂得尊重边界感的人</button>
+                <button class="option-btn" onclick="nextQuestion('D')">粗鲁、不懂得审美和情调的人</button>
+            </div>
+        </div>
+
+        <div class="question" id="q9">
+            <p>9. 你的房间里最不能缺少的是：</p>
+            <div class="options-list">
+                <button class="option-btn" onclick="nextQuestion('A')">贴满照片和海报的墙壁</button>
+                <button class="option-btn" onclick="nextQuestion('B')">可以把自己包裹住的柔软大床</button>
+                <button class="option-btn" onclick="nextQuestion('C')">一盆长势良好的植物或暖色的台灯</button>
+                <button class="option-btn" onclick="nextQuestion('D')">香薰蜡烛或质感上乘的唱片机</button>
+            </div>
+        </div>
+
+        <div class="question" id="q10">
+            <p>10. 最后，你会用哪个词形容当下的自己？</p>
+            <div class="options-list">
+                <button class="option-btn" onclick="nextQuestion('A')">Random (随机/随性)</button>
+                <button class="option-btn" onclick="nextQuestion('B')">Healing (愈合中/内省)</button>
+                <button class="option-btn" onclick="nextQuestion('C')">Grounded (脚踏实地/沉静)</button>
+                <button class="option-btn" onclick="nextQuestion('D')">Alluring (迷人/浪漫)</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="result-container">
+        <p style="text-transform:uppercase; font-size:0.8rem; letter-spacing:2px;">Your Clairo Era Is</p>
+        <div id="result-title"></div>
+        <div id="result-desc"></div>
+        <button class="option-btn" style="margin-top:30px; text-align:center;" onclick="location.reload()">Back to Start</button>
+    </div>
+</div>
+
+<script>
+    let scores = { A: 0, B: 0, C: 0, D: 0 };
+    let currentStep = 1;
+    const totalSteps = 10;
+
+    function startQuiz() {
+        document.getElementById('intro').style.display = 'none';
+        document.getElementById('quiz-content').style.display = 'block';
+    }
+
+    function nextQuestion(ans) {
+        scores[ans]++;
+        if (currentStep < totalSteps) {
+            document.getElementById('q' + currentStep).classList.remove('active');
+            currentStep++;
+            document.getElementById('q' + currentStep).classList.add('active');
+            document.getElementById('progress').style.width = (currentStep / totalSteps * 100) + '%';
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('quiz-content').style.display = 'none';
+        const resultContainer = document.getElementById('result-container');
+        const title = document.getElementById('result-title');
+        const desc = document.getElementById('result-desc');
+        
+        let winner = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+
+        const results = {
+            'A': {
+                name: "Diary 001",
+                text: "你是那个在卧室里创造世界的 Lo-fi 少年。你保留着最原始的纯真和一点搞怪，生活对你来说是一系列有趣的拼贴，不需要昂贵的器材，真实感就是你最迷人的地方。"
+            },
+            'B': {
+                name: "Immunity",
+                text: "你是深沉且极度敏感的。你不害怕在雨天长久地思考，也不害怕承认内心的软弱。你正在经历成长的蜕变，每一次心碎都让你变得更完整，你的美在于那份坚韧的脆弱。"
+            },
+            'C': {
+                name: "Sling",
+                text: "你已经找到了一种内心的平衡。现在的你更喜欢乡村、小狗和温暖的壁炉。你学会了照顾他人，也学会了在孤独中获得力量。你是那个在喧嚣世界中保持清醒的安静观察者。"
+            },
+            'D': {
+                name: "Charm",
+                text: "你进化成了最迷人的版本。你充满了复古的韵味和智慧，懂得如何在社交中保持适度的优雅与距离感。你像是一首 70 年代的流行曲，轻盈、灵动，让人忍不住想要靠近。"
+            }
+        };
+
+        title.innerText = results[winner].name;
+        desc.innerText = results[winner].text;
+        resultContainer.style.display = 'block';
+    }
+</script>
+
+</body>
+</html>

@@ -7,15 +7,451 @@
     <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,400;1,500;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #6b7a6d; 
-            --glass: rgba(255, 255, 255, 0.88);
+            --primary: #6b7a6d; /* 莫兰迪绿 */
+            /* 米色渐变滤镜，用于全屏背景 */
+            --bg-filter: linear-gradient(rgba(245, 242, 235, 0.5), rgba(234, 221, 202, 0.5));
+            /* 选项和问题的白色背景块（含毛玻璃） */
+            --glass-block: rgba(255, 255, 255, 0.9);
             --text-main: #333;
             --text-sub: #888;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(rgba(245, 242, 235, 0.5), rgba(234, 221, 202, 0.5)), 
+            /* **关键：调用大写后缀的全屏背景图 charm-bg.JPG** */
+            background: var(--bg-filter), 
+                        url('charm-bg.JPG') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 磨砂玻璃容器 - **关键：答题时去掉白色背景，设为全透明** */
+        #quiz-container {
+            width: 88%;
+            max-width: 420px;
+            background: transparent; /* **答题时彻底透明** */
+            backdrop-filter: blur(0); /* **答题时去掉整体毛玻璃** */
+            -webkit-backdrop-filter: blur(0);
+            padding: 50px 25px 40px 25px;
+            border-radius: 24px;
+            border: none; /* 去掉边框 */
+            box-shadow: none; /* 去掉阴影 */
+            position: relative;
+            text-align: center;
+            z-index: 2;
+            transition: all 0.4s ease;
+        }
+
+        /* **关键：结果页显示时，恢复磨砂玻璃白框效果** */
+        #quiz-container.result-active {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 15px 35px rgba(107, 122, 109, 0.1);
+        }
+
+        /* 顶部进度条样式 */
+        .progress-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background-color: rgba(0,0,0,0.03);
+            border-radius: 24px 24px 0 0;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%; /* 初始宽度为0 */
+            transition: width 0.4s ease; /* 平滑过渡动画 */
+        }
+
+        /* 音乐播放器控制按钮样式 */
+        .music-player-ctrl {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+        }
+        #music-toggle {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            -webkit-tap-highlight-color: transparent;
+            transition: all 0.2s ease;
+        }
+        #music-toggle.rotating {
+            animation: rotate 4s linear infinite; /* 播放时旋转 */
+        }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* 通用圆形图片样式 */
+        .clairo-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.07);
+            background-color: #eee;
+        }
+
+        /* 首页特定图片布局 */
+        #intro .clairo-avatar { margin-bottom: 25px; }
+
+        /* 开头和结果标题字体 - 衬线斜体 */
+        h1, #result-title {
+            font-family: 'Bodoni Moda', serif;
+            font-weight: 400;
+            font-style: italic; /* 关键：斜体 */
+            color: var(--primary);
+            margin: 0;
+            letter-spacing: -0.04em;
+        }
+        h1 { font-size: 2.6rem; margin-bottom: 15px; }
+        
+        /* 首页斜体描述文案 */
+        .intro-desc {
+            font-family: 'Bodoni Moda', serif;
+            font-style: italic; /* 关键：斜体 */
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: #555;
+            margin: 0 15px 35px 15px;
+            padding: 0 5px;
+        }
+
+        /* 问题区域样式 */
+        #quiz-content { display: none; text-align: left; }
+        .question-box {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s ease;
+        }
+        .question-box.active { display: block; opacity: 1; transform: translateY(0); }
+        
+        /* **关键：问题文本 - 宋体粗体，增加单独的白色毛玻璃背景块** */
+        .question-text {
+            font-family: "STSong", "SimSun", "Songti SC", serif;
+            font-size: 1.25rem;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            font-weight: 600;
+            color: #000;
+            background: var(--glass-block); /* **单独的白色背景** */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.3);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+        }
+
+        /* **关键：选项按钮 - 黑色、宋体、斜体，带白色毛玻璃背景块** */
+        .option-btn {
+            display: block;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.8); /* **单独的白色背景** */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.4);
+            padding: 18px 20px;
+            margin-bottom: 15px; /* **增加选项间的距离** */
+            border-radius: 14px;
+            cursor: pointer;
+            /* 设置为宋体斜体黑色 */
+            font-family: "STSong", "SimSun", "Songti SC", serif;
+            font-style: italic; /* 关键：斜体 */
+            font-size: 1.05rem;
+            text-align: left;
+            transition: all 0.25s ease;
+            color: #000; /* 黑色 */
+            -webkit-tap-highlight-color: transparent;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.02);
+        }
+        /* 选项按钮悬停和点击时的动画效果 */
+        .option-btn:hover {
+            background: white;
+            transform: translateX(4px);
+            border-color: var(--primary);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        /* 首页开始按钮样式 */
+        .primary-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 16px 50px;
+            border-radius: 30px;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(107, 122, 109, 0.15);
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        .primary-btn:hover {
+            background-color: #5d6b5e;
+            transform: translateY(-2px);
+        }
+
+        /* 结果区域样式 - **关键：恢复白色毛玻璃背景** */
+        #result-container { display: none; text-align: center; }
+        
+        /* **关键：结果页圆形图片 - 初始不设置 src，由脚本动态加载 Era 封面** */
+        #result-container .clairo-avatar {
+            width: 110px; /* 稍微调小一点 */
+            height: 110px;
+            margin-bottom: 20px;
+            /* 脚本加载封面图时会覆盖以下 src */
+        }
+
+        .result-header {
+            font-family: 'Bodoni Moda', serif;
+            font-style: italic;
+            font-size: 1rem;
+            color: var(--text-sub);
+            margin-bottom: 10px;
+        }
+        #result-title { font-size: 2.9rem; margin: 0 0 15px 0; line-height: 1; }
+        
+        /* 歌曲对应的 Era 标签样式 */
+        .result-era {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary);
+            background: rgba(107, 122, 109, 0.1);
+            padding: 5px 15px;
+            border-radius: 15px;
+            display: inline-block;
+            margin-bottom: 25px;
+        }
+        #result-desc {
+            font-family: "Inter", sans-serif; /* **结果描述建议用黑体，可读性更好** */
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: #666;
+            margin-bottom: 40px;
+            text-align: justify;
+            padding: 0 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="music-player-ctrl">
+    <button id="music-toggle" onclick="toggleMusic()">🎵</button>
+    <audio id="bgm" loop>
+        <source src="bgm.mp3" type="audio/mpeg">
+    </audio>
+</div>
+
+<div id="quiz-container">
+    <div class="progress-container">
+        <div class="progress-bar" id="progress"></div>
+    </div>
+
+    <div id="intro">
+        <img src="clairo.jpg" alt="Clairo Intro" class="clairo-avatar">
+        <h1>Clairo</h1>
+        <p class="intro-desc">Which Clairo song defines your soul? From the bedroom lo-fi beats of Diary 001 to the charming melodies of Charm. Step into the haze and find your track.</p>
+        <button class="primary-btn" onclick="startQuiz()">开始测试</button>
+    </div>
+
+    <div id="quiz-content">
+        <div id="question-display"></div>
+    </div>
+
+    <div id="result-container">
+        <img src="" alt="Clairo Result Era" class="clairo-avatar" id="result-era-image">
+        
+        <div class="result-header">Your soul track is</div>
+        <div id="result-title"></div>
+        <div class="result-era" id="result-era"></div>
+        <div id="result-desc"></div>
+        
+        <button class="option-btn" style="text-align:center; border:none; color:var(--primary); font-weight:500; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px;" onclick="location.reload()">RETAKE TEST</button>
+    </div>
+</div>
+
+<script>
+    // **15 道深度题目**
+    const questions = [
+        { q: "深夜独自一人时，你更倾向于？", options: { A: "开一点轻快的音乐顺便自拍", B: "陷入一段挥之不去的旧回忆", C: "点亮香薰，享受当下的宁静", D: "给心仪的人发一段意味深长的话" }},
+        { q: "你理想中的旅行目的地是？", options: { A: "充满活力的街头跳蚤市场", B: "长满青苔、潮湿的古老城市", C: "深山里的木屋，只有风声", D: "复古且奢华的午后咖啡馆" }},
+        { q: "哪种声音最让你感到治愈？", options: { A: "老式录音机的底噪电流声", B: "雨点敲击车窗的闷响", C: "森林里清脆的鸟鸣", D: "冰块撞击玻璃杯的清脆声" }},
+        { q: "如果要把一段感情比作一种物件？", options: { A: "一张曝光过度的照片", B: "一件洗得发白的旧卫衣", C: "一个精心打理的小盆栽", D: "一瓶正在挥发的昂贵香水" }},
+        { q: "在社交场合中，你通常扮演？", options: { A: "负责搞怪和活跃气氛的人", B: "负责照顾醉酒朋友的人", C: "坐在角落观察所有人的人", D: "引人注目却难以捉摸的人" }},
+        { q: "哪种穿着风格让你最自信？", options: { A: "多巴胺色系的趣味混搭", B: "遮住半张脸的大号连帽衫", C: "质地极佳的素色棉麻", D: "剪裁得体的真丝或复古廓形" }},
+        { q: "你如何看待“孤独”？", options: { A: "创作灵感来源", B: "一种无法逃避、略带酸楚的常态", C: "一种自由，让我重获新生", D: "一种高级的状态，让我保持清醒" }},
+        { q: "你的房间装饰风格是？", options: { A: "随性乱丢的杂志和海报", B: "充满了植物、书和暖色光源", C: "极简但有很多藏起来的小秘密", D: "讲究构图和质感的电影置景" }},
+        { q: "面对未来，你的心态更接近？", options: { A: "顺其自然，好玩就行", B: "因为忧虑，渴望安稳归属", C: "有些忧虑，但仍想尝试", D: "优雅掌控，追求极致审美" }},
+        { q: "最后，选择你此刻最想喝的？", options: { A: "冰镇苏打水", B: "热牛奶或草本茶", C: "一杯浓烈的黑咖啡", D: "一杯曼哈顿鸡尾酒" }},
+        { q: "当一段重要的关系结束，你通常会？", options: { A: "立刻找朋友通宵派对宣泄", B: "独自旅行，自我疗愈", C: "写一首只有自己能看懂的诗", D: "冷静下来，但深夜翻看记录" }},
+        { q: "你更偏向于哪一种“怀旧”？", options: { A: "千禧年 Lo-fi 互联网时代的像素", B: "80 年代合成器流行乐的闪烁光影", C: "70 年代森林民谣的简单木吉他质感", D: "60 年代爵士乐的天鹅绒质感" }},
+        { q: "你的生活拍成电影，它最接近哪种？", options: { A: "彩色的、结局未知的公路片", B: "充满了大段独白的黑白艺术片", C: "节奏缓慢沉静的纪实片", D: "讲究构图与微妙拉扯的情感片" }},
+        { q: "哪一种艺术形式最触动你的灵魂？", options: { A: "随性街头涂鸦与即兴 Vlog", B: "光影斑驳的胶片摄影", B: "光影斑驳的胶片摄影", C: "质地极佳的素色陶瓷与编织", D: "一张旋转的黑胶唱片与丝绸刺绣" }},
+        { q: "最后，你希望这个测试结果告诉你什么？", options: { A: "我依然拥有纯真", B: "我的深刻被理解了", C: "我找到了内心的宁静", D: "我是迷人且高级的" }}
+    ];
+
+    // **结果细化为具体的 16 首歌曲**
+    const songs = {
+        'A': [
+            { title: "Pretty Girl", era: "Diary 001", desc: "你是卧室里的 lo-fi 幻想家。哪怕生活模糊不清，也能把它变成艺术。纯真、自由，拥有无可取代的卧室美学。" },
+            { title: "Flamin Hot Cheetos", era: "Diary 001", desc: "你散发着一种随性、复古的酷劲。生活对你而言是即兴的派对，你拥有化腐朽为神奇的独特魅力。" },
+            { title: "Hello?", era: "Diary 001", desc: "你拥有 Bedroom Pop 的青涩与灵动。你是那个随性乱丢杂志、在互联网角落寻找共鸣的人，拥有最本真的创造力。" },
+            { title: "4EVER", era: "Diary 001", desc: "你是克莱罗最阳光的侧面。生活是一张曝光过度的照片，你拥有化解一切忧虑的、顺其自然的超能力。" }
+        ],
+        'B': [
+            { title: "Bags", era: "Immunity", desc: "你是时代最深刻的灵魂。正在经历深刻的内省期，明白脆弱才是最强大的武器。憂鬱却具有治愈他人的力量。" },
+            { title: "Sofia", era: "Immunity", desc: "你是那个躲在角落翻看旧回忆的人。你拥有深刻且刺痛的感情，充满了夏日的阴影。" },
+            { title: "Softly", era: "Immunity", desc: "你懂得如何在一段关系中保持微妙的距离与张力，像胶片摄影里斑驳的光影，迷人而敏感。" },
+            { title: "Alewife", era: "Immunity", desc: "你明白生命中那些支撑你的细碎光芒。明白在脆弱中寻找慰藉的重要性，灵魂深沉且充满感激。" }
+        ],
+        'C': [
+            { title: "Blouse", era: "Sling", desc: "宁静旷野里的吟唱者。你沉静、宽厚，充满了回归大地的宁静感，懂得脆弱与温柔的力量。" },
+            { title: "Harbor", era: "Sling", desc: "你是寻找内心港湾的旅人。比起外界喧嚣，你更在意内心的根基是否稳固温暖。拥有大地的力量。" },
+            { title: "Partridge", era: "Sling", desc: "你是那个负责照顾醉酒朋友、内心极度成熟的人。你的生活色彩沉静，专注于内心的根基。拥有沉稳的力量。" },
+            { title: "Just for Today", era: "Sling", desc: "已经步入了成熟的旷野。比起掌控，更偏向于脚踏实地的稳固。你是那个沉静的观察者，拥有治愈他人的温柔。" }
+        ],
+        'D': [
+            { title: "Sexy to Someone", era: "Charm", desc: "优雅与感官美学的集大成者。你懂得如何在一段关系中保持迷人的张力，复古且时髦。让生活充满浪漫的张力。" },
+            { title: "Juna", era: "Charm", desc: "轻盈且灵动的魅力，像一张正在旋转的黑胶唱片。你掌控着审美的张力，是社交场合中难以捉摸的神秘人。" },
+            { title: "Amoeba", era: "Charm", desc: "（注：此为 Charm 版 Amoeba 氛围）你懂得在精致的生活中寻找审美与浪漫的平衡。拥有复古而具有审美张力的沙龙美学。" },
+            { title: "Nomad", era: "Charm", desc: "你是那个掌控优雅与魅力的神秘人。面对未来，你拥有优雅掌控的态度。你是美学的集大成者，散发着迷离的光芒。" }
+        ]
+    };
+
+    let scores = { A: 0, B: 0, C: 0, D: 0 };
+    let currentStep = 0;
+    const audio = document.getElementById('bgm');
+    const musicBtn = document.getElementById('music-toggle');
+    const progressBar = document.getElementById('progress');
+    const quizContainer = document.getElementById('quiz-container'); // **关键：获取容器**
+
+    // 音乐播放控制器
+    function toggleMusic() {
+        if (audio.paused) {
+            audio.play();
+            musicBtn.classList.add('rotating');
+        } else {
+            audio.pause();
+            musicBtn.classList.remove('rotating');
+        }
+    }
+
+    // 开始测试
+    function startQuiz() {
+        // 首页 (含白色背景和大毛玻璃) 隐藏
+        document.getElementById('intro').style.display = 'none';
+        
+        // **关键：移除容器整体的白色背景和毛玻璃效果 (全透明答题模式)**
+        quizContainer.classList.remove('result-active'); // 确保结果页模式未被激活
+        // 注意：代码里 quizContainer 默认没这个类，但为了保险起见还是移一下
+        
+        // 答题内容 (含单独的小背景块) 显示
+        document.getElementById('quiz-content').style.display = 'block';
+        
+        // 尝试自动播放音乐
+        audio.play().then(() => musicBtn.classList.add('rotating')).catch(() => {});
+        renderQuestion();
+    }
+
+    // 渲染问题 (单独为问题和选项添加白色背景块)
+    function renderQuestion() {
+        const qData = questions[currentStep];
+        const display = document.getElementById('question-display');
+        display.innerHTML = `
+            <div class="question-box active">
+                <p class="question-text">${qData.q}</p>
+                ${Object.entries(qData.options).map(([key, val]) => `
+                    <button class="option-btn" onclick="handleSelect('${key}')">${val}</button>
+                `).join('')}
+            </div>
+        `;
+        // 更新进度条
+        progressBar.style.width = (currentStep / questions.length) * 100 + '%';
+    }
+
+    // 处理选项点击
+    function handleSelect(key) {
+        scores[key]++;
+        if (currentStep < questions.length - 1) {
+            currentStep++;
+            renderQuestion();
+        } else {
+            // 测试结束
+            progressBar.style.width = '100%';
+            showResult();
+        }
+    }
+
+    // **关键：显示结果，动态加载封面图片**
+    function showResult() {
+        document.getElementById('quiz-content').style.display = 'none';
+        
+        // **关键：恢复整体容器的白色背景和磨砂玻璃效果 (结果页模式)**
+        quizContainer.classList.add('result-active');
+        
+        // 计算最高分 Era
+        const winnerEra = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+        
+        // 从最高分 Era 中随机抽取一首歌曲
+        const eraSongs = songs[winnerEra];
+        const winnerSong = eraSongs[Math.floor(Math.random() * eraSongs.length)];
+
+        // **关键的核心逻辑：根据 winnerEra 动态修改圆形图片的 src 属性**
+        const eraImage = document.getElementById('result-era-image');
+        let imageSrc = '';
+        switch (winnerEra) {
+            case 'A': // Diary 001
+                imageSrc = 'diary001.JPG'; // **JPG 大写**
+                break;
+            case 'B': // Immunity
+                imageSrc = 'immunity.JPG'; // **JPG 大写**
+                break;
+            case 'C': // Sling
+                imageSrc = 'sling.jpg'; // **jpg 小写**
+                break;
+            case 'D': // Charm
+                imageSrc = 'charm.JPG'; // **JPG 大写**
+                break;
+            default: // 兜底使用 Clairo 的照片，防止错误
+                imageSrc = 'clairo.jpg';
+        }
+        eraImage.src = imageSrc; // **设置图片来源**
+
+        // 填充结果信息
+        document.getElementById('result-title').innerText = winnerSong.title;
+        document.getElementById('result-era').innerText = winnerSong.era;
+        document.getElementById('result-desc').innerText = winnerSong.desc;
+        document.getElementById('result-container').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
+linear-gradient(rgba(245, 242, 235, 0.5), rgba(234, 221, 202, 0.5)), 
                         url('charm-bg.JPG') no-repeat center center fixed;
             background-size: cover;
             margin: 0;

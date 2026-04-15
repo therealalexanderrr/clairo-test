@@ -9,72 +9,147 @@
         :root {
             --primary: #6b7a6d;
             --bg-filter: linear-gradient(rgba(245, 242, 235, 0.5), rgba(234, 221, 202, 0.5));
-            --glass-block: rgba(255, 255, 255, 0.55); 
+            --glass-block: rgba(255, 255, 255, 0.6); 
             --cream-white: #f5f5dc;
         }
 
         body {
             font-family: 'Inter', sans-serif;
             background: var(--bg-filter), url('charm-bg.JPG') no-repeat center center fixed;
-            background-size: cover; margin: 0; display: flex; justify-content: center; align-items: center;
+            background-size: cover;
+            margin: 0;
+            display: flex; justify-content: center; align-items: center;
             min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased;
         }
 
+        /* 顶部米白色进度条 */
         .progress-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 5px;
             background-color: rgba(255, 255, 255, 0.2); z-index: 1000;
         }
-        .progress-bar { height: 100%; background-color: var(--cream-white); width: 0%; transition: 0.4s ease; }
-
-        #quiz-container { width: 85%; max-width: 380px; position: relative; text-align: center; z-index: 2; padding: 40px 0; }
-
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            padding: 40px 25px; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        .progress-bar { 
+            height: 100%; background-color: var(--cream-white); width: 0%; 
+            transition: width 0.4s ease; box-shadow: 0 0 10px rgba(255, 255, 220, 0.5);
         }
 
-        /* 音乐控制 */
+        #quiz-container { width: 85%; max-width: 380px; position: relative; text-align: center; z-index: 2; padding: 20px 0; }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.88); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            padding: 40px 25px; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+
         .music-player-ctrl { position: absolute; top: 20px; right: 20px; z-index: 100; }
         #music-toggle {
-            background: rgba(255, 255, 255, 0.6); border: none; border-radius: 50%; 
-            width: 38px; height: 38px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 50%; width: 38px; height: 38px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
         }
         .rotating { animation: rotate 4s linear infinite; }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* 头像 */
         .clairo-avatar {
-            width: 110px; height: 110px; border-radius: 50%; object-fit: cover;
-            border: 3px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            width: 100px; height: 100px; border-radius: 50%; object-fit: cover;
+            border: 3px solid white; box-shadow: 0 6px 18px rgba(0,0,0,0.07);
         }
 
-        h1, #result-title { font-family: 'Bodoni Moda', serif; font-weight: 400; font-style: italic; color: var(--primary); margin: 0; }
-        h1 { font-size: 2.6rem; margin-bottom: 10px; }
+        h1 { font-family: 'Bodoni Moda', serif; font-weight: 400; font-style: italic; color: var(--primary); margin: 0; font-size: 2.6rem; margin-bottom: 15px; }
+        .intro-desc { font-family: 'Bodoni Moda', serif; font-style: italic; font-size: 1rem; line-height: 1.6; color: #555; margin-bottom: 35px; }
 
         #quiz-content { display: none; text-align: left; }
+        
         .question-text {
-            font-family: "STSong", serif; font-size: 1.1rem; margin-bottom: 25px; font-weight: 600;
-            background: var(--glass-block); padding: 22px; border-radius: 0; border: 1px solid rgba(255,255,255,0.4);
+            font-family: "STSong", "SimSun", "Songti SC", serif; font-size: 1.15rem; margin-bottom: 20px; 
+            font-weight: 600; color: #000; background: var(--glass-block); padding: 20px; 
+            border-radius: 0; border: 1px solid rgba(255,255,255,0.4);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
         }
 
-        /* 直角 + 高透明 选项 */
         .option-btn {
-            display: block; width: 100%; background: rgba(255, 255, 255, 0.45); 
-            border: 1px solid rgba(255,255,255,0.3); padding: 16px 20px; margin-bottom: 10px; 
-            border-radius: 0; cursor: pointer; color: #000; font-family: "STSong", serif; 
-            font-style: italic; font-size: 0.95rem; text-align: left; transition: 0.2s;
+            display: block; width: 100%; 
+            background: rgba(255, 255, 255, 0.6); 
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 16px 20px; margin-bottom: 10px; 
+            border-radius: 0; 
+            cursor: pointer; color: #000;
+            font-family: "STSong", "SimSun", "Songti SC", serif; font-style: italic; 
+            font-size: 1rem; text-align: left; transition: 0.2s;
             backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
         }
-        .option-btn:hover { background: rgba(255, 255, 255, 0.8); border-color: var(--primary); }
+        .option-btn:hover { background: rgba(255, 255, 255, 0.85); transform: translateX(4px); border-color: var(--primary); }
 
-        /* 结果页装饰 */
-        .lyric-quote { font-family: 'Bodoni Moda', serif; font-style: italic; color: #888; margin: 15px 0; font-size: 0.9rem; line-height: 1.5; padding: 0 15px; }
-        .correlation-header { font-size: 0.65rem; letter-spacing: 2px; color: #aaa; margin-top: 35px; border-top: 1px solid #eee; padding-top: 15px; }
-        .track-item { display: flex; justify-content: space-between; padding: 10px 5px; border-bottom: 1px solid rgba(0,0,0,0.03); font-size: 0.85rem; color: #555; }
-        .track-percent { font-family: 'Bodoni Moda', serif; font-style: italic; color: var(--primary); font-weight: 500; }
+        /* **核心修改：返回上一题 - 增加毛玻璃背景并往下放** */
+        .back-btn-wrapper {
+            margin-top: 35px; /* 往下放一点 */
+            display: flex;
+            justify-content: center;
+        }
+        .back-btn {
+            background: var(--glass-block); /* 和选项一致的毛玻璃背景 */
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            color: var(--primary); border: 1px solid rgba(255,255,255,0.3); 
+            padding: 10px 25px; border-radius: 0; /* 直角长方形 */
+            font-size: 0.8rem; cursor: pointer; font-style: italic; transition: 0.3s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.85); }
 
-        .primary-btn { background: var(--primary); color: white; border: none; padding: 15px 45px; border-radius: 30px; cursor: pointer; font-size: 0.9rem; }
+        .primary-btn { background: var(--primary); color: white; border: none; padding: 16px 50px; border-radius: 30px; font-size: 1rem; cursor: pointer; font-weight: 500; }
+
+        /* **结果页紧凑化核心 CSS** */
+        #result-container { display: none; text-align: center; }
+        
+        #result-title { 
+            font-family: 'Bodoni Moda', serif; font-weight: 400; font-style: italic; color: var(--primary);
+            font-size: 2.1rem; /* 标题变小 */
+            margin: 5px 0 10px 0; /* 压缩上下间距 */
+            line-height: 1.1;
+        }
+        .result-era {
+            font-size: 0.7rem; /* 字变小 */
+            text-transform: uppercase; letter-spacing: 1px; color: var(--primary);
+            background: rgba(107, 122, 109, 0.1); padding: 4px 12px; border-radius: 12px;
+            display: inline-block; margin-bottom: 12px; /* 压缩间距 */
+        }
+        #result-desc { 
+            font-family: "STSong", "SimSun", "Songti SC", serif; 
+            font-size: 0.9rem; /* 字变小 */
+            line-height: 1.6; color: #333; text-align: justify;
+            margin-bottom: 25px; /* 压缩间距 */
+            padding: 0 5px;
+        }
+
+        /* 关联列表紧凑化与百分比条 */
+        .top-tracks-title { 
+            font-size: 0.6rem; letter-spacing: 2px; color: #999;
+            margin-top: 25px; border-top: 1px solid #eee; padding-top: 15px; 
+            margin-bottom: 10px;
+        }
+        .track-item { 
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 8px 0; /* 压缩间距 */
+            border-bottom: 1px dashed #f0f0f0; font-size: 0.8rem; color: #555; 
+        }
+        .match-bar-container {
+            display: flex; align-items: center; gap: 8px;
+        }
+        /* 百分比数字斜体 */
+        .match-percent {
+            font-family: 'Bodoni Moda', serif; font-style: italic; font-weight: 500; color: var(--primary);
+        }
+        /* **核心修改：匹配度百分比条示意图** */
+        .match-bar-visual {
+            width: 40px; /* 示意条宽度 */
+            height: 3px; background-color: rgba(0,0,0,0.05);
+            position: relative; border-radius: 2px;
+        }
+        .match-bar-fill {
+            height: 100%; 
+            background-color: var(--cream-white); /* 米白色示意条 */
+            border-radius: 2px;
+            box-shadow: 0 0 5px rgba(255, 255, 220, 0.5);
+        }
     </style>
 </head>
 <body>
@@ -83,34 +158,35 @@
 
 <div class="music-player-ctrl">
     <button id="music-toggle" onclick="toggleMusic()">🎵</button>
-    <audio id="bgm" loop><source src="bgm.mp3" type="audio/mpeg"></audio>
+    <audio id="bgm" loop preload="auto"><source src="bgm.mp3" type="audio/mpeg"></audio>
 </div>
 
 <div id="quiz-container">
     <div id="intro-page" class="glass-panel">
-        <img src="clairo.jpg" class="clairo-avatar" style="margin-bottom: 20px;">
+        <img src="clairo.jpg" alt="Intro" class="clairo-avatar" style="margin-bottom: 25px;">
         <h1>Clairo</h1>
-        <p style="font-family:'Bodoni Moda', serif; font-style:italic; color:#666; margin-bottom:30px;">Which song defines your soul?</p>
+        <p class="intro-desc">Which Clairo song defines your soul? From the bedroom lo-fi beats of Diary 001 to the charming melodies of Charm. Step into the haze and find your track.</p>
         <button class="primary-btn" onclick="startQuiz()">开始测试</button>
     </div>
 
     <div id="quiz-content">
         <div id="question-display"></div>
-        <div style="text-align: center;">
-            <button id="back-link" style="background:none; border:none; color:#bbb; font-style:italic; font-size:0.8rem; cursor:pointer; display:none; margin-top:20px;" onclick="prevQuestion()">← Back</button>
+        <div class="back-btn-wrapper">
+            <button id="back-link" class="back-btn" onclick="prevQuestion()" style="display:none;">← Back to previous question</button>
         </div>
     </div>
 
-    <div id="result-container" class="glass-panel" style="display:none;">
-        <img src="" class="clairo-avatar" id="result-img">
-        <div id="result-title" style="font-size: 2.2rem; margin-top:15px;"></div>
-        <div id="result-lyric" class="lyric-quote"></div>
-        <div id="result-desc" style="font-family:'STSong', serif; font-size:0.95rem; line-height:1.6; color:#444; text-align:justify;"></div>
+    <div id="result-container" class="glass-panel">
+        <img src="" alt="Result" class="clairo-avatar" id="result-era-image" style="width:90px; height:90px; margin-bottom: 10px;">
+        <div style="font-family: 'Bodoni Moda', serif; font-style: italic; color: #888; font-size: 0.8rem; margin-top:5px;">Your soul track is</div>
+        <div id="result-title"></div>
+        <div class="result-era" id="result-era"></div>
+        <div id="result-desc"></div>
         
-        <div class="correlation-header">TOP 5 CORRELATION TRACKS</div>
+        <div class="top-tracks-title">TOP 5 CORRELATION TRACKS</div>
         <div id="track-list-container"></div>
 
-        <button class="option-btn" style="text-align:center; margin-top:35px; color:var(--primary); font-weight:bold; border:none; background:none;" onclick="location.reload()">RETAKE TEST</button>
+        <button class="option-btn" style="text-align:center; border:none; color:var(--primary); font-weight:bold; margin-top:25px; border-radius:0; font-size: 0.9rem;" onclick="location.reload()">RETAKE TEST</button>
     </div>
 </div>
 
@@ -125,69 +201,60 @@
         { q: "如何看待“孤独”？", options: { A: "灵感来源", B: "自由重生", C: "无法逃避的常态", D: "清醒的高级状态" }},
         { q: "房间装饰风格？", options: { A: "杂志和海报", B: "植物和暖灯", C: "极简小秘密", D: "电影质感" }},
         { q: "面对未来？", options: { A: "顺其自然", B: "渴望安稳", C: "忧虑但尝试", D: "优雅掌控" }},
-        { q: "此刻想喝？", options: { A: "苏打水", B: "草本茶", C: "黑咖啡", D: "鸡尾酒" }},
-        { q: "关系结束时？", options: { A: "找朋友开派对", B: "写一首诗", C: "独自旅行", D: "反复翻看记录" }},
-        { q: "哪种“怀旧”？", options: { A: "互联网像素", B: "80年代合成器", C: "70年代木吉他", D: "60年代爵士" }},
-        { q: "生活像哪种电影？", options: { A: "公路片", B: "艺术片", C: "纪实片", D: "情感片" }},
-        { q: "艺术形式？", options: { A: "Vlog", B: "胶片", C: "陶瓷", D: "黑胶" }},
-        { q: "希望结果告诉你？", options: { A: "我依然纯真", B: "脆弱被理解", C: "找到宁静", D: "迷人且高级" }}
+        { q: "此刻想喝？", options: { A: "苏打水", B: "热牛奶或草本茶", C: "一杯浓烈的黑咖啡", D: "一杯曼哈顿鸡尾酒" }},
+        { q: "当关系结束，你通常会？", options: { A: "立刻找朋友派对宣泄", B: "写一首只有自己懂的诗", C: "独自旅行自我疗愈", D: "冷静但深夜反复翻看记录" }},
+        { q: "你更偏向于哪一种“怀旧”？", options: { A: "互联网像素", B: "80年代合成器", C: "70年代木吉他", D: "60年代爵士" }},
+        { q: "你的生活像哪种电影？", options: { A: "公路片", B: "艺术片", C: "纪实片", D: "情感片" }},
+        { q: "哪种艺术最触动你？", options: { A: "Vlog", B: "胶片", C: "陶瓷", D: "黑胶" }},
+        { q: "希望结果告诉你？", options: { A: "我依然纯真", B: "脆弱被理解", C: "找到宁静", D: "我是迷人且高级的" }}
     ];
 
     const songs = {
         'A': [
-            { title: "Pretty Girl", lyric: "\"I could be a pretty girl, I'll wear a skirt for you.\"", desc: "你是卧室里的 lo-fi 幻想家，哪怕生活模糊不清，也能把它变成艺术。" },
-            { title: "Flaming Hot Cheetos", lyric: "\"I'm sent for you, I'm sent for you.\"", desc: "你拥有最古灵精怪的灵魂，在自嘲与浪漫之间保持着平衡。" },
-            { title: "4EVER", lyric: "\"Is it last forever? Or is it just until the summer's end?\"", desc: "向往永恒的夏日，复古且充满活力的节奏是你生活的底色。" },
-            { title: "Hello?", lyric: "\"I'm just a little bit out of my mind.\"", desc: "你总是那个先开口问候的人，内心充满好奇与青涩的探索欲。" },
-            { title: "B.O.M.D.", lyric: "\"You're the boy of my dreams.\"", desc: "纯真美学的代言人，总能在人群中发现让你心跳加速的梦中人。" }
+            { title: "Pretty Girl", era: "Diary 001", lyric: "\"I could be a pretty girl, I'll wear a skirt for you.\"", desc: "Bedroom pop lo-fi幻想家。纯真、自由，拥有无可取代的卧室美学。" },
+            { title: "Flaming Hot Cheetos", era: "Diary 001", lyric: "\"I'm sent for you, I'm sent for you.\"", desc: "散发着随性复古酷劲。你是即兴派对，拥有化腐朽为神奇魅力。" }
         ],
         'B': [
-            { title: "Bags", lyric: "\"Can you see me? I'm waiting for the right time.\"", desc: "明白脆弱才是最强大的武器，在情感拉扯中学会了优雅地安放内心。" },
-            { title: "Sofia", lyric: "\"Sofia, know that you and I shouldn't feel like a crime.\"", desc: "敢于直面内心最热烈的渴望，你的爱坚定且富有生命力。" },
-            { title: "Alewife", lyric: "\"Eighty-some days and I'm still alive.\"", desc: "有一颗细腻且知恩图报的心。在黑暗时刻，总能找到救命稻草。" },
-            { title: "Softly", lyric: "\"Touch me softly, don't let it go.\"", desc: "温柔地对待世界，轻盈的节奏是你对自由的向往。" },
-            { title: "Impossible", lyric: "\"I'm a little bit tired of this.\"", desc: "清醒的浪漫主义者。明白遗憾是常态，但依然保持独特审美。" }
+            { title: "Bags", era: "Immunity", lyric: "\"Can you see me? I'm waiting for the right time.\"", desc: "明白脆弱才是最强大武器，像雨后蓝调，憂鬱且具有治愈力。" },
+            { title: "Sofia", era: "Immunity", lyric: "\"Sofia, know that you and I shouldn't feel like a crime.\"", desc: "敢于直面内心最热烈渴望，你的爱坚定且富有生命力。" }
         ],
         'C': [
-            { title: "Blouse", lyric: "\"Why do I tell you how I feel? When you're just looking at my blouse.\"", desc: "宁静旷野里的吟唱者。沉静、宽厚，充满了回归大地的宁静感。" },
-            { title: "Amoeba", lyric: "\"Show up to the party just to leave.\"", desc: "在琐碎生活中思考存在的意义，有着顽强且低调的生命力。" },
-            { title: "Zinnias", lyric: "\"Quietly, I'll be the one you need.\"", desc: "向往田园牧歌般的自由，渴望在自己的土地上种下希望。" },
-            { title: "Just For Today", lyric: "\"I'm just trying to make it through.\"", desc: "深情的观察者，明白有些情感只需要在“今天”得到宣泄。" },
-            { title: "Management", lyric: "\"Complain to the management.\"", desc: "寻找掌控生活的能力，迷茫中最终会在音乐中找到秩序。" }
+            { title: "Blouse", era: "Sling", lyric: "\"Why do I tell you how I feel? When you're just looking at my blouse.\"", desc: "宁静旷野里的吟唱者。沉静、宽厚，充满了回归大地宁静感。" },
+            { title: "Amoeba", era: "Sling", lyric: "\"Show up to the party just to leave.\"", desc: "琐碎生活中思考存在的意义，有着顽强且低调生命力。" }
         ],
         'D': [
-            { title: "Juna", lyric: "\"You make me feel like a girl, go on and try it.\"", desc: "掌控着审美的张力。你是社交场合中难以捉摸的神秘人。" },
-            { title: "Sexy to Someone", lyric: "\"I'm sexy to someone, I'm sure.\"", desc: "自信展示自己的张力，这种能量让你在人群中熠熠生辉。" },
-            { title: "Add Up My Love", lyric: "\"You're the one I'm thinking of.\"", desc: "对感情有精准计算和热烈投入，复古节奏是你的跳动。" },
-            { title: "Terrapin", lyric: "\"Slow down, you're moving too fast.\"", desc: "像一只优雅的玳瑁，在时间流动中慢行，享受当下的质感。" },
-            { title: "Nomad", lyric: "\"I'm a nomad, I'm a traveler.\"", desc: "有一颗流浪的心，不愿被定义束缚。你在不同情绪中迁徙。" }
+            { title: "Juna", era: "Charm", lyric: "\"You make me feel like a girl, go on and try it.\"", desc: "掌控着审美的张力。轻盈且灵动魅力，难以捉摸的神秘人。" },
+            { title: "Sexy to Someone", era: "Charm", lyric: "\"I'm sexy to someone, I'm sure.\"", desc: "优雅掌控美学与感官张力，散发着复古而时髦的光芒。" }
         ]
     };
 
     let scores = { A: 0, B: 0, C: 0, D: 0 };
     let currentStep = 0;
     let choiceHistory = [];
+    const audio = document.getElementById('bgm');
+    const musicBtn = document.getElementById('music-toggle');
 
     function toggleMusic() {
-        const audio = document.getElementById('bgm');
-        if (audio.paused) { audio.play(); document.getElementById('music-toggle').innerText = "⏸"; }
-        else { audio.pause(); document.getElementById('music-toggle').innerText = "🎵"; }
+        if (audio.paused) { audio.play(); musicBtn.classList.add('rotating'); }
+        else { audio.pause(); musicBtn.classList.remove('rotating'); }
     }
 
     function startQuiz() {
         document.getElementById('intro-page').style.display = 'none';
         document.getElementById('quiz-content').style.display = 'block';
+        audio.play().then(() => musicBtn.classList.add('rotating')).catch(() => {});
         renderQuestion();
     }
 
     function renderQuestion() {
         const qData = questions[currentStep];
-        document.getElementById('question-display').innerHTML = `
+        const display = document.getElementById('question-display');
+        display.innerHTML = `
             <div class="question-text">${qData.q}</div>
             ${Object.entries(qData.options).map(([k, v]) => `<button class="option-btn" onclick="handleSelect('${k}')">${v}</button>`).join('')}
         `;
         document.getElementById('progress').style.width = (currentStep / questions.length) * 100 + '%';
-        document.getElementById('back-link').style.display = currentStep > 0 ? 'inline-block' : 'none';
+        document.getElementById('back-link').style.display = currentStep > 0 ? 'block' : 'none';
     }
 
     function handleSelect(key) {
@@ -198,39 +265,43 @@
     }
 
     function prevQuestion() {
-        if (currentStep > 0) { scores[choiceHistory.pop()]--; currentStep--; renderQuestion(); }
+        if (currentStep > 0) {
+            scores[choiceHistory.pop()]--;
+            currentStep--;
+            renderQuestion();
+        }
     }
 
     function showResult() {
         document.getElementById('quiz-content').style.display = 'none';
         const winner = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+        const eraSongs = songs[winner];
+        const main = eraSongs[Math.floor(Math.random() * eraSongs.length)];
         
-        // 随机主歌曲
-        const albumPool = songs[winner];
-        const main = albumPool[Math.floor(Math.random() * albumPool.length)];
-        
-        document.getElementById('result-img').src = { A: 'diary001.JPG', B: 'immunity.JPG', C: 'sling.jpg', D: 'charm.JPG' }[winner];
         document.getElementById('result-title').innerText = main.title;
-        document.getElementById('result-lyric').innerText = main.lyric;
-        document.getElementById('result-desc').innerText = main.desc;
+        document.getElementById('result-era').innerText = main.era;
+        document.getElementById('result-desc').innerHTML = `<p style="font-family:'Bodoni Moda', serif; font-style:italic; color:#777; margin:0 0 10px 0;">${main.lyric}</p>${main.desc}`;
+        document.getElementById('result-era-image').src = { A: 'diary001.JPG', B: 'immunity.JPG', C: 'sling.jpg', D: 'charm.JPG' }[winner];
 
-        // 计算所有歌曲匹配度
-        let allResults = [];
+        // TOP 5 关联度：增加米白色百分比条
+        let allPool = [];
         Object.keys(songs).forEach(key => {
-            const baseWeight = (scores[key] / questions.length);
+            const weight = (scores[key] + 1) / (questions.length + 4);
             songs[key].forEach(s => {
                 if(s.title !== main.title) {
-                    // 算法：基础权重 + 随机微调
-                    let matchPercent = (baseWeight * 85 + 10 + Math.random() * 5).toFixed(1);
-                    allResults.push({ title: s.title, match: matchPercent });
+                    allPool.push({ title: s.title, rel: (weight * 60 + 20 + Math.random() * 20).toFixed(1) });
                 }
             });
         });
-
-        const top5 = allResults.sort((a, b) => b.match - a.match).slice(0, 5);
-        document.getElementById('track-list-container').innerHTML = top5.map(s => 
-            `<div class="track-item"><span>${s.title}</span><span class="track-percent">${s.match}%</span></div>`
-        ).join('');
+        const top5 = allPool.sort((a, b) => b.rel - a.rel).slice(0, 5);
+        document.getElementById('track-list-container').innerHTML = top5.map(s => `
+            <div class="track-item">
+                <span>${s.title}</span>
+                <div class="match-bar-container">
+                    <span class="match-percent">${s.rel}%</span>
+                    <div class="match-bar-visual"><div class="match-bar-fill" style="width:${s.rel}%;"></div></div>
+                </div>
+            </div>`).join('');
 
         document.getElementById('result-container').style.display = 'block';
         document.getElementById('progress').style.width = '100%';

@@ -10,6 +10,7 @@
             --primary: #6b7a6d;
             --bg-filter: linear-gradient(rgba(245, 242, 235, 0.5), rgba(234, 221, 202, 0.5));
             --glass-block: rgba(255, 255, 255, 0.9);
+            --cream-white: #f5f5dc; /* 米白色 */
         }
 
         body {
@@ -17,41 +18,30 @@
             background: var(--bg-filter), url('charm-bg.JPG') no-repeat center center fixed;
             background-size: cover;
             margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased;
         }
 
-        /* 核心容器：调小宽度以增加留白 */
-        #quiz-container {
-            width: 82%; 
-            max-width: 380px;
-            position: relative;
-            text-align: center;
-            z-index: 2;
-            transition: all 0.4s ease;
+        /* 进度条：固定在页面最顶端，米白色 */
+        .progress-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 5px;
+            background-color: rgba(255, 255, 255, 0.2); z-index: 1000;
+        }
+        .progress-bar { 
+            height: 100%; 
+            background-color: var(--cream-white); 
+            width: 0%; 
+            transition: width 0.4s ease;
+            box-shadow: 0 0 10px rgba(255, 255, 220, 0.5);
         }
 
-        /* 首页和结果页的背景样式 */
+        #quiz-container { width: 82%; max-width: 380px; position: relative; text-align: center; z-index: 2; }
+
         .glass-panel {
-            background: rgba(255, 255, 255, 0.88);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 45px 25px;
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.88); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            padding: 45px 25px; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.5);
             box-shadow: 0 15px 35px rgba(0,0,0,0.1);
         }
-
-        .progress-container {
-            position: absolute;
-            top: -20px; left: 0; width: 100%; height: 4px;
-            background-color: rgba(0,0,0,0.05); border-radius: 10px; overflow: hidden;
-        }
-        .progress-bar { height: 100%; background-color: var(--primary); width: 0%; transition: 0.4s; }
 
         .music-player-ctrl { position: absolute; top: 20px; right: 20px; z-index: 100; }
         #music-toggle {
@@ -67,53 +57,45 @@
             border: 3px solid white; box-shadow: 0 6px 18px rgba(0,0,0,0.07);
         }
 
-        h1, #result-title {
-            font-family: 'Bodoni Moda', serif; font-weight: 400; font-style: italic;
-            color: var(--primary); margin: 0;
-        }
+        h1, #result-title { font-family: 'Bodoni Moda', serif; font-weight: 400; font-style: italic; color: var(--primary); margin: 0; }
         h1 { font-size: 2.6rem; margin-bottom: 15px; }
-        
-        .intro-desc {
-            font-family: 'Bodoni Moda', serif; font-style: italic;
-            font-size: 1rem; line-height: 1.6; color: #555; margin-bottom: 35px;
-        }
+        .intro-desc { font-family: 'Bodoni Moda', serif; font-style: italic; font-size: 1rem; line-height: 1.6; color: #555; margin-bottom: 35px; }
 
         #quiz-content { display: none; text-align: left; }
-        
-        /* 答题时的独立气泡背景 */
         .question-text {
-            font-family: "STSong", "SimSun", "Songti SC", serif;
-            font-size: 1.2rem; margin-bottom: 25px; font-weight: 600; color: #000;
-            background: var(--glass-block); padding: 22px; border-radius: 18px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            font-family: "STSong", "SimSun", "Songti SC", serif; font-size: 1.2rem; margin-bottom: 25px; 
+            font-weight: 600; color: #000; background: var(--glass-block); padding: 22px; border-radius: 18px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
         }
 
         .option-btn {
-            display: block; width: 100%; background: var(--glass-block);
-            border: 1px solid rgba(255,255,255,0.4); padding: 18px 20px; margin-bottom: 12px;
-            border-radius: 14px; cursor: pointer; color: #000;
-            font-family: "STSong", "SimSun", "Songti SC", serif; font-style: italic;
-            font-size: 1.05rem; text-align: left; transition: 0.2s;
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            display: block; width: 100%; background: var(--glass-block); border: 1px solid rgba(255,255,255,0.4);
+            padding: 18px 20px; margin-bottom: 12px; border-radius: 14px; cursor: pointer; color: #000;
+            font-family: "STSong", "SimSun", "Songti SC", serif; font-style: italic; font-size: 1.05rem;
+            text-align: left; transition: 0.2s; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
         }
         .option-btn:hover { background: white; transform: translateX(4px); border-color: var(--primary); }
 
-        .primary-btn {
-            background: var(--primary); color: white; border: none; padding: 16px 50px;
-            border-radius: 30px; font-size: 1rem; cursor: pointer; font-weight: 500;
+        .back-btn {
+            background: transparent; color: var(--primary); border: none; font-size: 0.85rem;
+            cursor: pointer; margin-top: 10px; opacity: 0.6; font-style: italic; display: block; width: 100%; text-align: center;
         }
+
+        .primary-btn { background: var(--primary); color: white; border: none; padding: 16px 50px; border-radius: 30px; font-size: 1rem; cursor: pointer; font-weight: 500; }
 
         #result-container { display: none; }
         .result-era {
-            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px;
-            color: var(--primary); background: rgba(107, 122, 109, 0.1);
-            padding: 5px 15px; border-radius: 15px; display: inline-block; margin: 15px 0;
+            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: var(--primary);
+            background: rgba(107, 122, 109, 0.1); padding: 5px 15px; border-radius: 15px; display: inline-block; margin: 15px 0;
         }
         #result-desc { font-family: "STSong", "SimSun", "Songti SC", serif; line-height: 1.8; color: #222; text-align: justify; }
     </style>
 </head>
 <body>
+
+<div class="progress-container">
+    <div class="progress-bar" id="progress"></div>
+</div>
 
 <div class="music-player-ctrl">
     <button id="music-toggle" onclick="toggleMusic()">🎵</button>
@@ -121,8 +103,6 @@
 </div>
 
 <div id="quiz-container">
-    <div class="progress-container"><div class="progress-bar" id="progress"></div></div>
-
     <div id="intro-page" class="glass-panel">
         <img src="clairo.jpg" alt="Intro" class="clairo-avatar" style="margin-bottom: 25px;">
         <h1>Clairo</h1>
@@ -132,6 +112,7 @@
 
     <div id="quiz-content">
         <div id="question-display"></div>
+        <button id="back-link" class="back-btn" onclick="prevQuestion()" style="display:none;">← Back to previous question</button>
     </div>
 
     <div id="result-container" class="glass-panel">
@@ -172,18 +153,19 @@
 
     let scores = { A: 0, B: 0, C: 0, D: 0 };
     let currentStep = 0;
-    const audio = document.getElementById('bgm');
-    const musicBtn = document.getElementById('music-toggle');
+    let choiceHistory = [];
 
     function toggleMusic() {
-        if (audio.paused) { audio.play(); musicBtn.classList.add('rotating'); }
-        else { audio.pause(); musicBtn.classList.remove('rotating'); }
+        const audio = document.getElementById('bgm');
+        const btn = document.getElementById('music-toggle');
+        if (audio.paused) { audio.play(); btn.classList.add('rotating'); }
+        else { audio.pause(); btn.classList.remove('rotating'); }
     }
 
     function startQuiz() {
         document.getElementById('intro-page').style.display = 'none';
         document.getElementById('quiz-content').style.display = 'block';
-        audio.play().catch(() => {});
+        document.getElementById('bgm').play().catch(() => {});
         renderQuestion();
     }
 
@@ -194,30 +176,40 @@
             ${Object.entries(qData.options).map(([k, v]) => `<button class="option-btn" onclick="handleSelect('${k}')">${v}</button>`).join('')}
         `;
         document.getElementById('progress').style.width = (currentStep / questions.length) * 100 + '%';
+        document.getElementById('back-link').style.display = currentStep > 0 ? 'block' : 'none';
     }
 
     function handleSelect(key) {
         scores[key]++;
+        choiceHistory.push(key);
         if (currentStep < questions.length - 1) { currentStep++; renderQuestion(); }
         else { showResult(); }
+    }
+
+    function prevQuestion() {
+        if (currentStep > 0) {
+            const lastChoice = choiceHistory.pop();
+            scores[lastChoice]--;
+            currentStep--;
+            renderQuestion();
+        }
     }
 
     function showResult() {
         document.getElementById('quiz-content').style.display = 'none';
         const winner = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
         const final = songs[winner][0];
-        
         const img = document.getElementById('result-era-image');
-        // 精准后缀逻辑
         if(winner === 'A') img.src = 'diary001.JPG';
         else if(winner === 'B') img.src = 'immunity.JPG';
         else if(winner === 'C') img.src = 'sling.jpg';
         else img.src = 'charm.JPG';
-
         document.getElementById('result-title').innerText = final.title;
         document.getElementById('result-era').innerText = final.era;
         document.getElementById('result-desc').innerText = final.desc;
+        document.getElementById('result-container').classList.add('glass-panel');
         document.getElementById('result-container').style.display = 'block';
+        document.getElementById('progress').style.width = '100%';
     }
 </script>
 </body>

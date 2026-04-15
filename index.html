@@ -61,15 +61,17 @@
         }
         .option-btn:hover { background: rgba(255, 255, 255, 0.8); border-color: var(--primary); transform: translateX(5px); }
 
-        /* 返回上一题毛玻璃背景块 */
+        /* 返回上一题：圆角毛玻璃背景块 */
         .back-btn-wrapper { margin-top: 30px; display: flex; justify-content: center; }
         .back-btn {
             background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            color: #888; border: 1px solid rgba(255, 255, 255, 0.2); padding: 10px 25px; border-radius: 0;
+            color: #888; border: 1px solid rgba(255, 255, 255, 0.2); padding: 10px 25px; 
+            border-radius: 20px; /* 调整为圆角 */
             font-size: 0.75rem; cursor: pointer; font-style: italic; transition: 0.3s;
         }
 
-        .signature { margin-top: 25px; font-size: 0.7rem; color: #bbb; font-family: 'Bodoni Moda', serif; font-style: italic; letter-spacing: 1px; }
+        /* 署名颜色调整为 Charm 绿色 */
+        .signature { margin-top: 25px; font-size: 0.7rem; color: var(--primary); font-family: 'Bodoni Moda', serif; font-style: italic; letter-spacing: 1px; }
 
         /* 结果页紧凑化 */
         #result-title { font-family: 'Bodoni Moda', serif; font-style: italic; font-size: 1.9rem; color: var(--primary); margin: 8px 0; }
@@ -88,7 +90,9 @@
     <div id="intro-page" class="glass-panel">
         <img src="clairo.jpg" class="clairo-avatar" style="margin-bottom: 20px;">
         <h1 style="font-family:'Bodoni Moda'; font-style:italic; color:var(--primary); font-size:2.6rem; margin:0;">Clairo</h1>
-        <p style="font-family:'Bodoni Moda'; font-style:italic; color:#777; margin-bottom:40px;">Find your soulmate track.</p>
+        <p style="font-family:'Bodoni Moda', serif; font-style:italic; color:#777; margin-bottom:30px; line-height:1.5; padding:0 10px;">
+            Which Clairo song defines your soul? From the bedroom lo fi beats of Diary 001 to the charming melodies of Charm. Step into the haze and find your track.
+        </p>
         <button onclick="startQuiz()" style="background:var(--primary); color:white; border:none; padding:16px 50px; border-radius:30px; cursor:pointer; font-weight:500; letter-spacing:1px;">START TEST</button>
         <div class="signature" style="margin-top:40px;">by ClairoDaily</div>
     </div>
